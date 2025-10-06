@@ -1,27 +1,51 @@
+// ============================================
+// FILE: app/account/page.js (REPLACE ENTIRE FILE)
+// LOCATION: app/account/page.js
+// This fixes the deopt warning by using Suspense
+// ============================================
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function AccountPage() {
-  const router = useRouter()
+// Separate component for search params (wrapped in Suspense)
+function ConfirmationAlert() {
   const searchParams = useSearchParams()
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get('confirmed') === 'true') {
+      setShow(true)
+      setTimeout(() => setShow(false), 5000)
+    }
+  }, [searchParams])
+
+  if (!show) return null
+
+  return (
+    <div className="alert alert-success alert-dismissible fade show">
+      <strong>✓ Email Confirmed!</strong> Your account is now active.
+      <button 
+        type="button" 
+        className="btn-close" 
+        onClick={() => setShow(false)}
+      ></button>
+    </div>
+  )
+}
+
+// Main component
+function AccountPageContent() {
+  const router = useRouter()
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [purchases, setPurchases] = useState([])
   const [deleting, setDeleting] = useState(false)
-  const [showConfirmed, setShowConfirmed] = useState(false)
 
   useEffect(() => {
-    // Check if coming from email confirmation
-    if (searchParams.get('confirmed') === 'true') {
-      setShowConfirmed(true)
-      // Hide after 5 seconds
-      setTimeout(() => setShowConfirmed(false), 5000)
-    }
     checkUser()
-  }, [searchParams])
+  }, [])
 
   async function checkUser() {
     const { data: { user } } = await supabase.auth.getUser()
@@ -71,7 +95,9 @@ export default function AccountPage() {
   if (loading) {
     return (
       <div className="container mt-5 text-center">
-        <div className="spinner-border" role="status"></div>
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
       </div>
     )
   }
@@ -82,19 +108,11 @@ export default function AccountPage() {
         <div className="col-lg-8">
           <h2 className="mb-4">My Account</h2>
 
-          {/* Email Confirmed Alert */}
-          {showConfirmed && (
-            <div className="alert alert-success alert-dismissible fade show">
-              <strong>✓ Email Confirmed!</strong> Your account is now active.
-              <button 
-                type="button" 
-                className="btn-close" 
-                onClick={() => setShowConfirmed(false)}
-              ></button>
-            </div>
-          )}
+          {/* Email Confirmed Alert - Wrapped in Suspense */}
+          <Suspense fallback={null}>
+            <ConfirmationAlert />
+          </Suspense>
 
-          {/* Rest of the component stays the same... */}
           {/* Account Info */}
           <div className="card mb-4">
             <div className="card-header">
@@ -198,5 +216,20 @@ export default function AccountPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Export with Suspense wrapper
+export default function AccountPage() {
+  return (
+    <Suspense fallback={
+      <div className="container mt-5 text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    }>
+      <AccountPageContent />
+    </Suspense>
   )
 }
