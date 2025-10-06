@@ -2,22 +2,43 @@ import Link from 'next/link'
 
 export default function PromptCard({ prompt }) {
   return (
-    <div className="card h-100 shadow-sm">
+    <div className="card h-100 shadow-sm hover-card">
       <div className="card-body d-flex flex-column">
         <div className="d-flex justify-content-between align-items-start mb-2">
           <h5 className="card-title">{prompt.title}</h5>
-          <span className="badge bg-primary">${prompt.price}</span>
+          <span className="badge bg-primary fs-6">${prompt.price}</span>
         </div>
         
-        <p className="text-muted small mb-2">
-          <span className="badge bg-secondary">{prompt.category}</span>
-        </p>
+        <div className="mb-2">
+          <span className="badge bg-secondary me-1">{prompt.category}</span>
+          {prompt.region_language && (
+            <span className="badge bg-info text-dark">{prompt.region_language}</span>
+          )}
+        </div>
         
-        <p className="card-text text-muted small">{prompt.description}</p>
+        <p className="card-text text-muted small flex-grow-1">{prompt.description}</p>
+        
+        {prompt.optimized_models && prompt.optimized_models.length > 0 && (
+          <div className="mb-2">
+            <small className="text-muted d-block mb-1">🤖 Optimized for:</small>
+            <div className="d-flex flex-wrap gap-1">
+              {prompt.optimized_models.slice(0, 3).map((model, idx) => (
+                <span key={idx} className="badge bg-light text-dark border" style={{fontSize: '0.7rem'}}>
+                  {model}
+                </span>
+              ))}
+              {prompt.optimized_models.length > 3 && (
+                <span className="badge bg-light text-dark border" style={{fontSize: '0.7rem'}}>
+                  +{prompt.optimized_models.length - 3} more
+                </span>
+              )}
+            </div>
+          </div>
+        )}
         
         <div className="bg-light p-2 rounded mb-3">
           <small className="text-muted d-block mb-1">Preview:</small>
-          <small className="font-monospace" style={{fontSize: '0.75rem'}}>
+          <small className="font-monospace" style={{fontSize: '0.7rem'}}>
             {prompt.preview_text.slice(0, 100)}...
           </small>
         </div>
@@ -28,6 +49,18 @@ export default function PromptCard({ prompt }) {
           </Link>
         </div>
       </div>
+
+      <style jsx>{`
+        .hover-card {
+          transition: all 0.3s ease;
+          border: 1px solid rgba(0,0,0,0.125);
+        }
+        .hover-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+          border-color: #667eea;
+        }
+      `}</style>
     </div>
   )
 }

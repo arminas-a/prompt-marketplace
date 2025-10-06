@@ -1,3 +1,38 @@
+### Version 1.3 - 2025-02-06
+
+**Critical Bug Fixes:**
+- ✅ Fixed RLS policies blocking admin operations
+- ✅ Fixed admin unable to see prompts from other users
+- ✅ Fixed approve/reject buttons not working
+- ✅ Fixed approved prompts not appearing in public feed
+- ✅ Fixed homepage not showing any prompts after approval
+
+**UX Improvements:**
+- ✅ Replaced annoying alert popups with elegant toast notifications
+- ✅ Added auto-fill email for logged-in users during checkout
+- ✅ Added modern footer with atmospheric design
+- ✅ Improved visual feedback throughout the app
+
+**New Features:**
+- ✅ Model optimization tags (GPT-4, Claude, Gemini, etc.)
+- ✅ Multi-select model compatibility
+- ✅ Region/language tags for prompts
+- ✅ Enhanced prompt metadata system
+- ✅ Professional toast notification system
+
+**Database Changes:**
+- ✅ Updated RLS policies to allow admin full access
+- ✅ Added optimized_models column (TEXT ARRAY)
+- ✅ Added region_language column (TEXT)
+
+**Technical:**
+- ✅ Fixed Stripe checkout session creation
+- ✅ Improved error handling in payment flow
+- ✅ Added debug logging for admin operations
+- ✅ Enhanced seller information in admin panel
+
+
+
 # PromptHub - Corporate AI Prompts Marketplace
 
 **Professional AI prompts for Legal, Compliance, HR, Finance & more.**

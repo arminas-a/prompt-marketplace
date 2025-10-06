@@ -1,14 +1,24 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
-import { supabase } from '../../../lib/supabase'
+import { createClient } from '@supabase/supabase-js'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
 
 export async function POST(request) {
   try {
     const { promptId, email } = await request.json()
 
-    // Get prompt details
+    if (!promptId || !email) {
+      return NextResponse.json(
+        { error: 'Missing required fields' }, 
+        { status: 400 }
+      )
+    }
+
     const { data: prompt, error } = await supabase
       .from('prompts')
       .select('*')
@@ -17,10 +27,21 @@ export async function POST(request) {
       .single()
 
     if (error || !prompt) {
-      return NextResponse.json({ error: 'Prompt not found' }, { status: 404 })
+      console.error('Prompt not found:', error)
+      return NextResponse.json(
+        { error: 'Prompt not found or not available' }, 
+        { status: 404 }
+      )
     }
 
-    // Create Stripe checkout session
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.error('Stripe secret key not configured')
+      return NextResponse.json(
+        { error: 'Payment system not configured' }, 
+        { status: 500 }
+      )
+    }
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -31,7 +52,7 @@ export async function POST(request) {
               name: prompt.title,
               description: prompt.description,
             },
-            unit_amount: Math.round(prompt.price * 100), // Convert to cents
+            unit_amount: Math.round(prompt.price * 100),
           },
           quantity: 1,
         },
@@ -49,6 +70,9 @@ export async function POST(request) {
     return NextResponse.json({ url: session.url })
   } catch (error) {
     console.error('Checkout error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json(
+      { error: error.message || 'An error occurred creating checkout session' }, 
+      { status: 500 }
+    )
   }
 }

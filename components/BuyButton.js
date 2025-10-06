@@ -1,11 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
 
 export default function BuyButton({ promptId, price }) {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [showEmailInput, setShowEmailInput] = useState(false)
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        setUser(user)
+        setEmail(user.email)
+      }
+    })
+  }, [])
 
   async function handleBuy() {
     if (!showEmailInput) {
@@ -13,8 +24,8 @@ export default function BuyButton({ promptId, price }) {
       return
     }
 
-    if (!email) {
-      alert('Please enter your email')
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address')
       return
     }
 
@@ -30,16 +41,20 @@ export default function BuyButton({ promptId, price }) {
         }),
       })
 
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to create checkout session')
+      }
+
       const data = await response.json()
 
       if (data.url) {
-        // Redirect to Stripe checkout
         window.location.href = data.url
       } else {
-        alert('Error creating checkout session')
-        setLoading(false)
+        throw new Error('No checkout URL returned')
       }
     } catch (error) {
+      console.error('Checkout error:', error)
       alert('Error: ' + error.message)
       setLoading(false)
     }
@@ -66,14 +81,23 @@ export default function BuyButton({ promptId, price }) {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <small className="text-muted">We'll send the prompt here</small>
+            <small className="text-muted">
+              {user ? '✓ Using your account email' : 'We\'ll send the prompt here'}
+            </small>
           </div>
           <button 
             className="btn btn-success w-100 btn-lg"
             onClick={handleBuy}
             disabled={loading}
           >
-            {loading ? 'Processing...' : `Proceed to Payment`}
+            {loading ? (
+              <>
+                <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                Processing...
+              </>
+            ) : (
+              `Proceed to Payment`
+            )}
           </button>
         </div>
       )}
