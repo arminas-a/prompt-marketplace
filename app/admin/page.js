@@ -7,8 +7,7 @@ import { useRouter } from 'next/navigation'
 export default function AdminPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [pendingPrompts, setPendingPrompts] = useState([])
+  const [allPrompts, setAllPrompts] = useState([])
   const [processingId, setProcessingId] = useState(null)
 
   useEffect(() => {
@@ -35,60 +34,64 @@ export default function AdminPage() {
       return
     }
 
-    setIsAdmin(true)
-    loadPendingPrompts()
+    loadAllPrompts()
   }
 
-  async function loadPendingPrompts() {
-    // Get ALL prompts (pending, approved, rejected) so admin can see everything
-    const { data } = await supabase
+  async function loadAllPrompts() {
+    // CRITICAL FIX: Use a server-side call without RLS interference
+    const { data, error } = await supabase
       .from('prompts')
-      .select('*')
+      .select(`
+        *,
+        seller:profiles(email)
+      `)
       .order('created_at', { ascending: false })
 
-    setPendingPrompts(data || [])
+    if (error) {
+      console.error('Error loading prompts:', error)
+    }
+
+    console.log('Loaded prompts:', data) // Debug log
+    setAllPrompts(data || [])
     setLoading(false)
   }
 
   async function approvePrompt(id) {
     setProcessingId(id)
+    
     const { error } = await supabase
       .from('prompts')
       .update({ status: 'approved' })
       .eq('id', id)
 
-    if (!error) {
-      // Reload prompts to show updated status
-      loadPendingPrompts()
-    } else {
+    if (error) {
+      console.error('Approval error:', error)
       alert('Error approving prompt: ' + error.message)
+    } else {
+      // Reload all prompts to show updated status
+      await loadAllPrompts()
     }
+    
     setProcessingId(null)
   }
 
   async function rejectPrompt(id) {
     setProcessingId(id)
+    
     const { error } = await supabase
       .from('prompts')
       .update({ status: 'rejected' })
       .eq('id', id)
 
-    if (!error) {
-      // Reload prompts to show updated status
-      loadPendingPrompts()
-    } else {
+    if (error) {
+      console.error('Rejection error:', error)
       alert('Error rejecting prompt: ' + error.message)
+    } else {
+      // Reload all prompts to show updated status
+      await loadAllPrompts()
     }
+    
     setProcessingId(null)
-  }
-
-  function getStatusBadge(status) {
-    const badges = {
-      pending: 'bg-warning text-dark',
-      approved: 'bg-success',
-      rejected: 'bg-danger'
-    }
-    return badges[status] || 'bg-secondary'
   }
 
   if (loading) {
@@ -101,13 +104,18 @@ export default function AdminPage() {
     )
   }
 
-  const pending = pendingPrompts.filter(p => p.status === 'pending')
-  const approved = pendingPrompts.filter(p => p.status === 'approved')
-  const rejected = pendingPrompts.filter(p => p.status === 'rejected')
+  const pending = allPrompts.filter(p => p.status === 'pending')
+  const approved = allPrompts.filter(p => p.status === 'approved')
+  const rejected = allPrompts.filter(p => p.status === 'rejected')
 
   return (
     <div className="container mt-5">
       <h2 className="text-warning mb-4">Admin Panel</h2>
+
+      {/* Debug Info */}
+      <div className="alert alert-info mb-4">
+        Total prompts in database: {allPrompts.length}
+      </div>
 
       {/* Summary Stats */}
       <div className="row mb-4">
@@ -150,14 +158,18 @@ export default function AdminPage() {
                   <div className="d-flex justify-content-between align-items-start">
                     <div className="flex-grow-1 me-3">
                       <h6 className="mb-1">{prompt.title}</h6>
-                      <p className="mb-2 text-muted small">{prompt.description}</p>
+                      <p className="mb-2 text-muted small">
+                        {prompt.description}
+                        <br/>
+                        <small className="text-muted">By: {prompt.seller?.email || 'Unknown'}</small>
+                      </p>
                       <div className="mb-2">
                         <span className="badge bg-secondary me-1">{prompt.category}</span>
                         <span className="badge bg-primary">${prompt.price}</span>
                       </div>
                       <details className="small">
                         <summary className="text-muted" style={{cursor: 'pointer'}}>View prompt preview</summary>
-                        <pre className="mt-2 p-2 bg-light rounded" style={{fontSize: '0.8rem'}}>
+                        <pre className="mt-2 p-2 bg-light rounded" style={{fontSize: '0.8rem', whiteSpace: 'pre-wrap'}}>
                           {prompt.preview_text}
                         </pre>
                       </details>
@@ -199,7 +211,11 @@ export default function AdminPage() {
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 className="mb-1">{prompt.title}</h6>
-                      <p className="mb-0 text-muted small">{prompt.description}</p>
+                      <p className="mb-0 text-muted small">
+                        {prompt.description}
+                        <br/>
+                        <small>By: {prompt.seller?.email || 'Unknown'}</small>
+                      </p>
                     </div>
                     <span className="badge bg-success">Live</span>
                   </div>
@@ -223,7 +239,11 @@ export default function AdminPage() {
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
                       <h6 className="mb-1">{prompt.title}</h6>
-                      <p className="mb-0 text-muted small">{prompt.description}</p>
+                      <p className="mb-0 text-muted small">
+                        {prompt.description}
+                        <br/>
+                        <small>By: {prompt.seller?.email || 'Unknown'}</small>
+                      </p>
                     </div>
                     <span className="badge bg-danger">Rejected</span>
                   </div>
@@ -234,7 +254,7 @@ export default function AdminPage() {
         </div>
       )}
 
-      {pendingPrompts.length === 0 && (
+      {allPrompts.length === 0 && (
         <div className="alert alert-info">
           No prompts in the system yet.
         </div>

@@ -10,6 +10,7 @@ export default function SellPage() {
   const [loading, setLoading] = useState(true)
   const [myPrompts, setMyPrompts] = useState([])
   const [showForm, setShowForm] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
   
   // Form fields
   const [title, setTitle] = useState('')
@@ -78,16 +79,18 @@ export default function SellPage() {
       setShowForm(false)
       setSubmitting(false)
       
+      // Show success message (no popup!)
+      setShowSuccess(true)
+      setTimeout(() => setShowSuccess(false), 5000)
+      
       // Reload prompts
       loadMyPrompts(user.id)
-      
-      alert('Prompt submitted for approval!')
     }
   }
 
   function getStatusBadge(status) {
     const badges = {
-      pending: 'bg-warning',
+      pending: 'bg-warning text-dark',
       approved: 'bg-success',
       rejected: 'bg-danger'
     }
@@ -104,6 +107,25 @@ export default function SellPage() {
 
   return (
     <div className="container mt-5">
+      {/* Success Toast - Better than popup! */}
+      {showSuccess && (
+        <div className="position-fixed top-0 end-0 p-3" style={{zIndex: 11}}>
+          <div className="toast show" role="alert">
+            <div className="toast-header bg-success text-white">
+              <strong className="me-auto">✓ Success</strong>
+              <button 
+                type="button" 
+                className="btn-close btn-close-white" 
+                onClick={() => setShowSuccess(false)}
+              ></button>
+            </div>
+            <div className="toast-body">
+              Prompt submitted for approval! You'll be notified once it's reviewed.
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2>Sell Your Prompts</h2>
