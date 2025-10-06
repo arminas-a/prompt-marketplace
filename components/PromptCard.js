@@ -2,7 +2,23 @@ import Link from 'next/link'
 
 export default function PromptCard({ prompt }) {
   return (
-    <div className="card h-100 shadow-sm hover-card">
+    <div 
+      className="card h-100 shadow-sm hover-card"
+      style={{
+        transition: 'all 0.3s ease',
+        border: '1px solid rgba(0,0,0,0.125)'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-5px)'
+        e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)'
+        e.currentTarget.style.borderColor = '#667eea'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'translateY(0)'
+        e.currentTarget.style.boxShadow = ''
+        e.currentTarget.style.borderColor = 'rgba(0,0,0,0.125)'
+      }}
+    >
       <div className="card-body d-flex flex-column">
         <div className="d-flex justify-content-between align-items-start mb-2">
           <h5 className="card-title">{prompt.title}</h5>
@@ -49,18 +65,6 @@ export default function PromptCard({ prompt }) {
           </Link>
         </div>
       </div>
-
-      <style jsx>{`
-        .hover-card {
-          transition: all 0.3s ease;
-          border: 1px solid rgba(0,0,0,0.125);
-        }
-        .hover-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
-          border-color: #667eea;
-        }
-      `}</style>
     </div>
   )
 }
