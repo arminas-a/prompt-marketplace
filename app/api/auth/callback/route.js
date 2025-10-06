@@ -11,6 +11,6 @@ export async function GET(request) {
     await supabase.auth.exchangeCodeForSession(code)
   }
 
-  // Redirect to sell page after successful auth
-  return NextResponse.redirect(new URL('/sell', request.url))
+  // Redirect to account page with success message
+  return NextResponse.redirect(new URL('/account?confirmed=true', request.url))
 }

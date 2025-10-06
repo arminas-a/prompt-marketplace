@@ -65,6 +65,9 @@ export default function Navbar() {
                 <li className="nav-item">
                   <Link href="/sell" className="nav-link">Sell Prompts</Link>
                 </li>
+                <li className="nav-item">
+                  <Link href="/account" className="nav-link">My Account</Link>
+                </li>
                 {isAdmin && (
                   <li className="nav-item">
                     <Link href="/admin" className="nav-link text-warning">Admin</Link>

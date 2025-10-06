@@ -1,7 +1,13 @@
-import { supabase } from '../lib/supabase'
+import { createClient } from '@supabase/supabase-js'
 import PromptCard from '../components/PromptCard'
 
-export const revalidate = 0 // Don't cache
+// Create a server-side supabase client (no auth required)
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
+
+export const revalidate = 0 // Don't cache, always fetch fresh
 
 async function getPrompts() {
   const { data, error } = await supabase
@@ -33,17 +39,22 @@ export default async function HomePage() {
 
       {prompts.length === 0 ? (
         <div className="alert alert-info text-center">
-          <h4>No prompts yet!</h4>
-          <p>Be the first to <a href="/sell">sell a prompt</a>.</p>
+          <h4>No prompts available yet</h4>
+          <p>Check back soon! New prompts are being added.</p>
         </div>
       ) : (
-        <div className="row g-4">
-          {prompts.map((prompt) => (
-            <div key={prompt.id} className="col-md-6 col-lg-4">
-              <PromptCard prompt={prompt} />
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="mb-4">
+            <h5>{prompts.length} prompt{prompts.length !== 1 ? 's' : ''} available</h5>
+          </div>
+          <div className="row g-4">
+            {prompts.map((prompt) => (
+              <div key={prompt.id} className="col-md-6 col-lg-4">
+                <PromptCard prompt={prompt} />
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   )
