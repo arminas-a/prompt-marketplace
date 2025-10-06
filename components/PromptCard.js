@@ -1,6 +1,11 @@
+'use client'
+
 import Link from 'next/link'
 
 export default function PromptCard({ prompt }) {
+  const optimizedModels = prompt.optimized_models || []
+  const regionLanguage = prompt.region_language || 'Global/English'
+  
   return (
     <div 
       className="card h-100 shadow-sm hover-card"
@@ -27,25 +32,25 @@ export default function PromptCard({ prompt }) {
         
         <div className="mb-2">
           <span className="badge bg-secondary me-1">{prompt.category}</span>
-          {prompt.region_language && (
-            <span className="badge bg-info text-dark">{prompt.region_language}</span>
+          {regionLanguage && (
+            <span className="badge bg-info text-dark">{regionLanguage}</span>
           )}
         </div>
         
         <p className="card-text text-muted small flex-grow-1">{prompt.description}</p>
         
-        {prompt.optimized_models && prompt.optimized_models.length > 0 && (
+        {optimizedModels.length > 0 && (
           <div className="mb-2">
             <small className="text-muted d-block mb-1">🤖 Optimized for:</small>
             <div className="d-flex flex-wrap gap-1">
-              {prompt.optimized_models.slice(0, 3).map((model, idx) => (
+              {optimizedModels.slice(0, 3).map((model, idx) => (
                 <span key={idx} className="badge bg-light text-dark border" style={{fontSize: '0.7rem'}}>
                   {model}
                 </span>
               ))}
-              {prompt.optimized_models.length > 3 && (
+              {optimizedModels.length > 3 && (
                 <span className="badge bg-light text-dark border" style={{fontSize: '0.7rem'}}>
-                  +{prompt.optimized_models.length - 3} more
+                  +{optimizedModels.length - 3} more
                 </span>
               )}
             </div>
@@ -55,7 +60,7 @@ export default function PromptCard({ prompt }) {
         <div className="bg-light p-2 rounded mb-3">
           <small className="text-muted d-block mb-1">Preview:</small>
           <small className="font-monospace" style={{fontSize: '0.7rem'}}>
-            {prompt.preview_text.slice(0, 100)}...
+            {prompt.preview_text?.slice(0, 100)}...
           </small>
         </div>
         
