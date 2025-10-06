@@ -1,6 +1,14 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
+import { headers } from 'next/headers'
+
+const getBaseUrl = (req) => {
+  const headersList = headers();
+  const host = headersList.get('host');
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+  return process.env.NEXT_PUBLIC_APP_URL || `${protocol}://${host}`;
+};
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const supabase = createClient(
@@ -59,14 +67,15 @@ export async function POST(request) {
       ],
       mode: 'payment',
       customer_email: email,
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/purchase/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/prompt/${promptId}`,
+      success_url: `${getBaseUrl()}/purchase/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${getBaseUrl()}/prompt/${promptId}`,
       metadata: {
         promptId,
         buyerEmail: email,
       },
     })
 
+    console.log('Checkout session URL:', session.url)
     return NextResponse.json({ url: session.url })
   } catch (error) {
     console.error('Checkout error:', error)
