@@ -3,9 +3,9 @@ export default function Footer() {
   
   return (
     <footer style={{
-      backgroundColor: 'var(--ft-black)',
-      color: 'rgba(255,255,255,0.8)',
-      borderTop: '1px solid rgba(255,255,255,0.1)',
+      backgroundColor: '#000',
+      color: '#ccc',
+      borderTop: '3px solid var(--commando-green)',
       marginTop: 'auto',
       padding: '3rem 0 1.5rem 0',
       fontFamily: 'Georgia, serif'
@@ -17,19 +17,20 @@ export default function Footer() {
               fontFamily: 'Georgia, serif',
               fontSize: '1.5rem',
               fontWeight: '700',
-              color: '#fff',
+              color: 'var(--commando-green)',
               marginBottom: '1rem',
-              letterSpacing: '-0.5px'
+              letterSpacing: '2px',
+              textTransform: 'uppercase'
             }}>
-              Prompt Marketplace
+              ⚡ Commando
             </h5>
             <p style={{
-              color: 'rgba(255,255,255,0.6)',
+              color: '#999',
               lineHeight: '1.6',
               marginBottom: '1rem',
-              fontSize: '0.95rem'
+              fontSize: '0.9rem'
             }}>
-              A premium marketplace for professional AI prompts. Curated, verified, and trusted by industry leaders.
+              Elite AI command center for special operations. Deploy mission-critical commands with precision and power.
             </p>
           </div>
 
@@ -37,27 +38,27 @@ export default function Footer() {
             <h6 style={{
               fontSize: '0.75rem',
               fontWeight: '700',
-              color: 'rgba(255,255,255,0.9)',
+              color: 'var(--commando-highlight)',
               textTransform: 'uppercase',
-              letterSpacing: '1px',
+              letterSpacing: '1.5px',
               marginBottom: '1rem'
-            }}>Marketplace</h6>
+            }}>Operations</h6>
             <ul className="list-unstyled">
               <li className="mb-2">
                 <a href="/" className="footer-link" style={{
-                  color: 'rgba(255,255,255,0.6)',
+                  color: '#999',
                   textDecoration: 'none',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   transition: 'color 0.2s'
-                }}>Browse Prompts</a>
+                }}>Command Library</a>
               </li>
               <li className="mb-2">
                 <a href="/sell" className="footer-link" style={{
-                  color: 'rgba(255,255,255,0.6)',
+                  color: '#999',
                   textDecoration: 'none',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   transition: 'color 0.2s'
-                }}>Sell Prompts</a>
+                }}>Deploy Command</a>
               </li>
             </ul>
           </div>
@@ -66,35 +67,35 @@ export default function Footer() {
             <h6 style={{
               fontSize: '0.75rem',
               fontWeight: '700',
-              color: 'rgba(255,255,255,0.9)',
+              color: 'var(--commando-highlight)',
               textTransform: 'uppercase',
-              letterSpacing: '1px',
+              letterSpacing: '1.5px',
               marginBottom: '1rem'
-            }}>Categories</h6>
+            }}>Missions</h6>
             <ul className="list-unstyled">
               <li className="mb-2">
                 <a href="#" className="footer-link" style={{
-                  color: 'rgba(255,255,255,0.6)',
+                  color: '#999',
                   textDecoration: 'none',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   transition: 'color 0.2s'
-                }}>Legal</a>
+                }}>Black Ops</a>
               </li>
               <li className="mb-2">
                 <a href="#" className="footer-link" style={{
-                  color: 'rgba(255,255,255,0.6)',
+                  color: '#999',
                   textDecoration: 'none',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   transition: 'color 0.2s'
-                }}>Compliance</a>
+                }}>Tactical Support</a>
               </li>
               <li className="mb-2">
                 <a href="#" className="footer-link" style={{
-                  color: 'rgba(255,255,255,0.6)',
+                  color: '#999',
                   textDecoration: 'none',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   transition: 'color 0.2s'
-                }}>HR & Finance</a>
+                }}>Intel</a>
               </li>
             </ul>
           </div>
@@ -103,25 +104,25 @@ export default function Footer() {
             <h6 style={{
               fontSize: '0.75rem',
               fontWeight: '700',
-              color: 'rgba(255,255,255,0.9)',
+              color: 'var(--commando-highlight)',
               textTransform: 'uppercase',
-              letterSpacing: '1px',
+              letterSpacing: '1.5px',
               marginBottom: '1rem'
-            }}>Legal</h6>
+            }}>Protocol</h6>
             <ul className="list-unstyled">
               <li className="mb-2">
                 <a href="#" className="footer-link" style={{
-                  color: 'rgba(255,255,255,0.6)',
+                  color: '#999',
                   textDecoration: 'none',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   transition: 'color 0.2s'
-                }}>Privacy Policy</a>
+                }}>Rules of Engagement</a>
               </li>
               <li className="mb-2">
                 <a href="#" className="footer-link" style={{
-                  color: 'rgba(255,255,255,0.6)',
+                  color: '#999',
                   textDecoration: 'none',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   transition: 'color 0.2s'
                 }}>Terms of Service</a>
               </li>
@@ -129,14 +130,16 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="row mt-4 pt-4" style={{borderTop: '1px solid rgba(255,255,255,0.1)'}}>
+        <div className="row mt-4 pt-4" style={{borderTop: '2px solid var(--commando-border)'}}>
           <div className="col-12 text-center">
             <p style={{
-              color: 'rgba(255,255,255,0.5)',
-              fontSize: '0.875rem',
-              marginBottom: 0
+              color: '#666',
+              fontSize: '0.8rem',
+              marginBottom: 0,
+              textTransform: 'uppercase',
+              letterSpacing: '1px'
             }}>
-              © {currentYear} Prompt Marketplace. All rights reserved.
+              © {currentYear} Commando. Mission Critical Operations.
             </p>
           </div>
         </div>

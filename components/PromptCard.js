@@ -1,18 +1,38 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
 
 export default function PromptCard({ prompt }) {
   const optimizedModels = prompt.optimized_models || []
-  const regionLanguage = prompt.region_language || 'Global/English'
+  const regionLanguage = prompt.region_language || 'Global'
+  const [salesCount, setSalesCount] = useState(0)
+  
+  useEffect(() => {
+    async function loadSalesCount() {
+      const { count } = await supabase
+        .from('purchases')
+        .select('*', { count: 'exact', head: true })
+        .eq('prompt_id', prompt.id)
+      
+      setSalesCount(count || 0)
+    }
+    loadSalesCount()
+  }, [prompt.id])
   
   return (
     <div 
       className="card h-100 prompt-card-hover"
       style={{
         transition: 'all 0.2s ease',
-        border: '1px solid var(--ft-border)',
-        backgroundColor: '#fff',
+        border: '2px solid var(--commando-border)',
+        backgroundColor: '#1a1a1a',
         borderRadius: 0
       }}
     >
@@ -20,51 +40,56 @@ export default function PromptCard({ prompt }) {
         <div className="d-flex justify-content-between align-items-start mb-3">
           <h5 style={{
             fontFamily: 'Georgia, serif',
-            fontSize: '1.25rem',
+            fontSize: '1.1rem',
             fontWeight: '700',
-            color: 'var(--ft-black)',
+            color: '#f0f0f0',
             marginBottom: 0,
             lineHeight: '1.3',
-            flex: 1
+            flex: 1,
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px'
           }}>{prompt.title}</h5>
           <span style={{
-            backgroundColor: 'var(--ft-black)',
+            backgroundColor: 'var(--commando-green)',
             color: '#fff',
             padding: '0.4rem 0.8rem',
             fontSize: '1rem',
             fontWeight: '700',
             fontFamily: 'Georgia, serif',
-            marginLeft: '1rem'
+            marginLeft: '1rem',
+            border: '2px solid var(--commando-olive)'
           }}>${prompt.price}</span>
         </div>
         
-        <div className="mb-3">
+        <div className="mb-3 d-flex gap-2 align-items-center flex-wrap">
           <span style={{
-            backgroundColor: 'var(--ft-light-grey)',
-            color: 'var(--ft-black)',
+            backgroundColor: 'var(--commando-grey)',
+            color: '#f0f0f0',
             padding: '0.25rem 0.6rem',
-            fontSize: '0.8rem',
+            fontSize: '0.75rem',
             fontWeight: '600',
             fontFamily: 'Georgia, serif',
-            marginRight: '0.5rem',
-            display: 'inline-block'
+            display: 'inline-block',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            border: '1px solid var(--commando-border)'
           }}>{prompt.category}</span>
-          {regionLanguage && (
-            <span style={{
-              backgroundColor: '#fff',
-              color: 'var(--ft-grey)',
-              padding: '0.25rem 0.6rem',
-              fontSize: '0.8rem',
-              fontFamily: 'Georgia, serif',
-              border: '1px solid var(--ft-border)',
-              display: 'inline-block'
-            }}>{regionLanguage}</span>
-          )}
+          <span style={{
+            backgroundColor: '#000',
+            color: 'var(--commando-highlight)',
+            padding: '0.25rem 0.6rem',
+            fontSize: '0.75rem',
+            fontFamily: 'Georgia, serif',
+            border: '1px solid var(--commando-green)',
+            display: 'inline-block',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px'
+          }}>⚡ {salesCount} DEPLOYED</span>
         </div>
         
         <p style={{
-          color: 'var(--ft-grey)',
-          fontSize: '0.95rem',
+          color: '#ccc',
+          fontSize: '0.9rem',
           lineHeight: '1.6',
           marginBottom: '1rem',
           flex: 1,
@@ -74,33 +99,36 @@ export default function PromptCard({ prompt }) {
         {optimizedModels.length > 0 && (
           <div className="mb-3">
             <small style={{
-              color: 'var(--ft-grey)',
-              fontSize: '0.8rem',
+              color: 'var(--commando-highlight)',
+              fontSize: '0.75rem',
               fontWeight: '600',
               display: 'block',
               marginBottom: '0.5rem',
-              fontFamily: 'Georgia, serif'
-            }}>Optimized for:</small>
+              fontFamily: 'Georgia, serif',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>Compatible Systems:</small>
             <div className="d-flex flex-wrap gap-1">
               {optimizedModels.slice(0, 3).map((model, idx) => (
                 <span key={idx} style={{
-                  backgroundColor: '#fff',
-                  color: 'var(--ft-grey)',
+                  backgroundColor: '#000',
+                  color: '#6b8e23',
                   padding: '0.2rem 0.5rem',
-                  fontSize: '0.75rem',
-                  border: '1px solid var(--ft-border)',
-                  fontFamily: 'Georgia, serif'
+                  fontSize: '0.7rem',
+                  border: '1px solid var(--commando-border)',
+                  fontFamily: 'Georgia, serif',
+                  textTransform: 'uppercase'
                 }}>
                   {model}
                 </span>
               ))}
               {optimizedModels.length > 3 && (
                 <span style={{
-                  backgroundColor: '#fff',
-                  color: 'var(--ft-grey)',
+                  backgroundColor: '#000',
+                  color: '#6b8e23',
                   padding: '0.2rem 0.5rem',
-                  fontSize: '0.75rem',
-                  border: '1px solid var(--ft-border)',
+                  fontSize: '0.7rem',
+                  border: '1px solid var(--commando-border)',
                   fontFamily: 'Georgia, serif'
                 }}>
                   +{optimizedModels.length - 3}
@@ -110,30 +138,6 @@ export default function PromptCard({ prompt }) {
           </div>
         )}
         
-        <div style={{
-          backgroundColor: 'var(--ft-pink)',
-          padding: '0.75rem',
-          marginBottom: '1rem',
-          border: '1px solid var(--ft-border)'
-        }}>
-          <small style={{
-            color: 'var(--ft-grey)',
-            fontSize: '0.8rem',
-            fontWeight: '600',
-            display: 'block',
-            marginBottom: '0.5rem',
-            fontFamily: 'Georgia, serif'
-          }}>Preview:</small>
-          <small style={{
-            fontFamily: 'Georgia, serif',
-            fontSize: '0.85rem',
-            color: 'var(--ft-black)',
-            lineHeight: '1.5'
-          }}>
-            {prompt.preview_text?.slice(0, 100)}...
-          </small>
-        </div>
-        
         <div className="mt-auto">
           <Link 
             href={`/prompt/${prompt.id}`}
@@ -141,19 +145,21 @@ export default function PromptCard({ prompt }) {
             style={{
               display: 'block',
               width: '100%',
-              backgroundColor: 'var(--ft-black)',
+              backgroundColor: 'var(--commando-green)',
               color: '#fff',
               padding: '0.75rem 1.5rem',
               textAlign: 'center',
               textDecoration: 'none',
               fontFamily: 'Georgia, serif',
-              fontSize: '0.95rem',
-              fontWeight: '600',
-              border: '1px solid var(--ft-black)',
-              transition: 'all 0.2s'
+              fontSize: '0.9rem',
+              fontWeight: '700',
+              border: '2px solid var(--commando-green)',
+              transition: 'all 0.2s',
+              textTransform: 'uppercase',
+              letterSpacing: '1px'
             }}
           >
-            View Details
+            EXECUTE COMMAND
           </Link>
         </div>
       </div>

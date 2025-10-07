@@ -40,21 +40,22 @@ export default function Navbar() {
 
   return (
     <nav style={{
-      backgroundColor: 'var(--ft-black)',
-      borderBottom: '1px solid #000',
+      backgroundColor: '#000',
+      borderBottom: '3px solid var(--commando-green)',
       padding: '0'
     }}>
       <div className="container">
         <div className="d-flex justify-content-between align-items-center" style={{height: '64px'}}>
           <Link href="/" style={{
             fontFamily: 'Georgia, serif',
-            fontSize: '1.5rem',
+            fontSize: '1.75rem',
             fontWeight: '700',
-            color: '#fff',
+            color: 'var(--commando-green)',
             textDecoration: 'none',
-            letterSpacing: '-0.5px'
+            letterSpacing: '2px',
+            textTransform: 'uppercase'
           }}>
-            Prompt Marketplace
+            ⚡ Commando
           </Link>
           
           <div className="d-flex align-items-center gap-1">
@@ -62,15 +63,17 @@ export default function Navbar() {
               href="/"
               className="nav-link-hover"
               style={{
-                color: '#fff',
+                color: '#ccc',
                 padding: '0.5rem 1rem',
                 fontFamily: 'Georgia, serif',
-                fontSize: '0.95rem',
+                fontSize: '0.9rem',
                 textDecoration: 'none',
-                transition: 'all 0.2s'
+                transition: 'all 0.2s',
+                textTransform: 'uppercase',
+                letterSpacing: '1px'
               }}
             >
-              Browse
+              Commands
             </Link>
             
             {user ? (
@@ -79,61 +82,69 @@ export default function Navbar() {
                   href="/sell"
                   className="nav-link-hover"
                   style={{
-                    color: '#fff',
+                    color: '#ccc',
                     padding: '0.5rem 1rem',
                     fontFamily: 'Georgia, serif',
-                    fontSize: '0.95rem',
+                    fontSize: '0.9rem',
                     textDecoration: 'none',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
                   }}
                 >
-                  Sell
+                  Deploy
                 </Link>
                 <Link
                   href="/account"
                   className="nav-link-hover"
                   style={{
-                    color: '#fff',
+                    color: '#ccc',
                     padding: '0.5rem 1rem',
                     fontFamily: 'Georgia, serif',
-                    fontSize: '0.95rem',
+                    fontSize: '0.9rem',
                     textDecoration: 'none',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
                   }}
                 >
-                  Account
+                  Base
                 </Link>
                 {isAdmin && (
                   <Link
                     href="/admin"
                     style={{
-                      color: 'var(--ft-pink)',
+                      color: '#ff0',
                       padding: '0.5rem 1rem',
                       fontFamily: 'Georgia, serif',
-                      fontSize: '0.95rem',
+                      fontSize: '0.9rem',
                       textDecoration: 'none',
-                      transition: 'all 0.2s'
+                      transition: 'all 0.2s',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px'
                     }}
                   >
-                    Admin
+                    Command Center
                   </Link>
                 )}
                 <button
                   onClick={handleLogout}
                   className="nav-link-hover"
                   style={{
-                    color: '#fff',
+                    color: '#ccc',
                     padding: '0.5rem 1rem',
                     fontFamily: 'Georgia, serif',
-                    fontSize: '0.95rem',
+                    fontSize: '0.9rem',
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
-                    textDecoration: 'none'
+                    textDecoration: 'none',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
                   }}
                 >
-                  Logout
+                  Exfil
                 </button>
               </>
             ) : (
@@ -142,12 +153,14 @@ export default function Navbar() {
                   href="/login"
                   className="nav-link-hover"
                   style={{
-                    color: '#fff',
+                    color: '#ccc',
                     padding: '0.5rem 1rem',
                     fontFamily: 'Georgia, serif',
-                    fontSize: '0.95rem',
+                    fontSize: '0.9rem',
                     textDecoration: 'none',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
                   }}
                 >
                   Login
@@ -156,19 +169,21 @@ export default function Navbar() {
                   href="/signup"
                   className="btn-signup"
                   style={{
-                    backgroundColor: 'var(--ft-blue)',
+                    backgroundColor: 'var(--commando-green)',
                     color: '#fff',
                     padding: '0.5rem 1.5rem',
                     fontFamily: 'Georgia, serif',
-                    fontSize: '0.95rem',
+                    fontSize: '0.9rem',
                     textDecoration: 'none',
                     marginLeft: '0.5rem',
                     transition: 'all 0.2s',
-                    border: '1px solid var(--ft-blue)',
-                    display: 'inline-block'
+                    border: '2px solid var(--commando-green)',
+                    display: 'inline-block',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
                   }}
                 >
-                  Sign Up
+                  Enlist
                 </Link>
               </>
             )}
