@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet" 
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
         />
-        <style>{`
+        <style dangerouslySetInnerHTML={{__html: `
           :root {
             --ft-pink: #FFF1E5;
             --ft-black: #33302E;
@@ -27,14 +27,14 @@ export default function RootLayout({ children }) {
           }
           
           body {
-            font-family: Georgia, 'Times New Roman', serif !important;
+            font-family: Georgia, Times New Roman, serif !important;
             color: var(--ft-black) !important;
             background-color: #FAFAF9 !important;
             line-height: 1.7 !important;
           }
           
           h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-            font-family: Georgia, 'Times New Roman', serif !important;
+            font-family: Georgia, Times New Roman, serif !important;
             font-weight: 700 !important;
             color: var(--ft-black) !important;
             line-height: 1.2 !important;
@@ -112,7 +112,6 @@ export default function RootLayout({ children }) {
             padding: 0.35em 0.65em !important;
           }
           
-          /* Navigation hover effects */
           .nav-link-hover:hover {
             text-decoration: underline !important;
           }
@@ -122,23 +121,20 @@ export default function RootLayout({ children }) {
             border-color: var(--ft-dark-blue) !important;
           }
           
-          /* Footer hover effects */
           .footer-link:hover {
             color: #fff !important;
           }
           
-          /* Button hover effects */
           .btn-view-details:hover {
             background-color: var(--ft-blue) !important;
             border-color: var(--ft-blue) !important;
           }
           
-          /* Card hover effects */
           .prompt-card-hover:hover {
             border-color: var(--ft-black) !important;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
           }
-        `}</style>
+        `}} />
       </head>
       <body className="d-flex flex-column min-vh-100">
         <div style={{
