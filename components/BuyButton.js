@@ -23,14 +23,12 @@ export default function BuyButton({ promptId, price, sellerId }) {
       setUser(user)
       setEmail(user.email)
       
-      // Check if this is user's own prompt
       if (sellerId === user.id) {
         setIsOwnPrompt(true)
         setCheckingPurchase(false)
         return
       }
       
-      // Check if already purchased
       const { data } = await supabase
         .from('purchases')
         .select('id')
@@ -67,7 +65,6 @@ export default function BuyButton({ promptId, price, sellerId }) {
       return
     }
 
-    // Check again if purchased with this email (for guest users)
     const { data: existingPurchase } = await supabase
       .from('purchases')
       .select('id')

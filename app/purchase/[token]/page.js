@@ -64,25 +64,21 @@ export default async function PurchasePage({ params }) {
               <p className="text-muted mb-4">{prompt.description}</p>
               
               <h5>Your Prompt:</h5>
-              <div className="bg-light p-4 rounded">
+              <div className="bg-light p-4 rounded mb-4">
                 <pre style={{whiteSpace: 'pre-wrap', fontFamily: 'monospace', margin: 0}}>
 {prompt.prompt_text}
                 </pre>
               </div>
 
-              <div className="mt-4">
-                <button 
-                  className="btn btn-primary"
-                  onClick={() => {
-                    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-                      navigator.clipboard.writeText(prompt.prompt_text)
-                      alert('Copied to clipboard!')
-                    }
-                  }}
-                >
-                  📋 Copy to Clipboard
-                </button>
-              </div>
+              <button 
+                className="btn btn-primary"
+                onClick={() => {
+                  navigator.clipboard.writeText(prompt.prompt_text)
+                  alert('Copied to clipboard!')
+                }}
+              >
+                📋 Copy to Clipboard
+              </button>
             </div>
           </div>
 
