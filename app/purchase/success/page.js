@@ -1,12 +1,38 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function SuccessPage() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const sessionId = searchParams.get('session_id')
   const [copied, setCopied] = useState(false)
+  const [accessToken, setAccessToken] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchAccessToken() {
+      if (!sessionId) {
+        setLoading(false)
+        return
+      }
+
+      try {
+        const response = await fetch(`/api/purchase-by-session?session_id=${sessionId}`)
+        if (response.ok) {
+          const data = await response.json()
+          setAccessToken(data.access_token)
+        }
+      } catch (error) {
+        console.error('Error fetching access token:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchAccessToken()
+  }, [sessionId])
 
   const handleCopySessionId = () => {
     if (sessionId) {
@@ -44,9 +70,20 @@ export default function SuccessPage() {
               </div>
 
               <div className="d-grid gap-3">
-                <a href="/account" className="btn btn-primary btn-lg">
-                  📄 View My Purchases
-                </a>
+                {loading ? (
+                  <button className="btn btn-primary btn-lg" disabled>
+                    <span className="spinner-border spinner-border-sm me-2"></span>
+                    Loading your purchase...
+                  </button>
+                ) : accessToken ? (
+                  <a href={`/purchase/${accessToken}`} className="btn btn-primary btn-lg">
+                    📄 View Your Prompt
+                  </a>
+                ) : (
+                  <a href="/account" className="btn btn-primary btn-lg">
+                    📄 View My Purchases
+                  </a>
+                )}
                 <a href="/" className="btn btn-outline-primary">
                   Browse More Prompts
                 </a>
