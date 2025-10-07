@@ -8,20 +8,12 @@ export default function PromptCard({ prompt }) {
   
   return (
     <div 
-      className="card h-100"
+      className="card h-100 prompt-card-hover"
       style={{
         transition: 'all 0.2s ease',
         border: '1px solid var(--ft-border)',
         backgroundColor: '#fff',
         borderRadius: 0
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'var(--ft-black)'
-        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)'
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'var(--ft-border)'
-        e.currentTarget.style.boxShadow = 'none'
       }}
     >
       <div className="card-body d-flex flex-column" style={{padding: '1.5rem'}}>
@@ -144,7 +136,8 @@ export default function PromptCard({ prompt }) {
         
         <div className="mt-auto">
           <Link 
-            href={`/prompt/${prompt.id}`} 
+            href={`/prompt/${prompt.id}`}
+            className="btn-view-details"
             style={{
               display: 'block',
               width: '100%',
@@ -158,14 +151,6 @@ export default function PromptCard({ prompt }) {
               fontWeight: '600',
               border: '1px solid var(--ft-black)',
               transition: 'all 0.2s'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = 'var(--ft-blue)'
-              e.target.style.borderColor = 'var(--ft-blue)'
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = 'var(--ft-black)'
-              e.target.style.borderColor = 'var(--ft-black)'
             }}
           >
             View Details

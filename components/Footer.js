@@ -44,20 +44,20 @@ export default function Footer() {
             }}>Marketplace</h6>
             <ul className="list-unstyled">
               <li className="mb-2">
-                <a href="/" style={{
+                <a href="/" className="footer-link" style={{
                   color: 'rgba(255,255,255,0.6)',
                   textDecoration: 'none',
                   fontSize: '0.9rem',
                   transition: 'color 0.2s'
-                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Browse Prompts</a>
+                }}>Browse Prompts</a>
               </li>
               <li className="mb-2">
-                <a href="/sell" style={{
+                <a href="/sell" className="footer-link" style={{
                   color: 'rgba(255,255,255,0.6)',
                   textDecoration: 'none',
                   fontSize: '0.9rem',
                   transition: 'color 0.2s'
-                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Sell Prompts</a>
+                }}>Sell Prompts</a>
               </li>
             </ul>
           </div>
@@ -73,28 +73,28 @@ export default function Footer() {
             }}>Categories</h6>
             <ul className="list-unstyled">
               <li className="mb-2">
-                <a href="#" style={{
+                <a href="#" className="footer-link" style={{
                   color: 'rgba(255,255,255,0.6)',
                   textDecoration: 'none',
                   fontSize: '0.9rem',
                   transition: 'color 0.2s'
-                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Legal</a>
+                }}>Legal</a>
               </li>
               <li className="mb-2">
-                <a href="#" style={{
+                <a href="#" className="footer-link" style={{
                   color: 'rgba(255,255,255,0.6)',
                   textDecoration: 'none',
                   fontSize: '0.9rem',
                   transition: 'color 0.2s'
-                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Compliance</a>
+                }}>Compliance</a>
               </li>
               <li className="mb-2">
-                <a href="#" style={{
+                <a href="#" className="footer-link" style={{
                   color: 'rgba(255,255,255,0.6)',
                   textDecoration: 'none',
                   fontSize: '0.9rem',
                   transition: 'color 0.2s'
-                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>HR & Finance</a>
+                }}>HR & Finance</a>
               </li>
             </ul>
           </div>
@@ -110,20 +110,20 @@ export default function Footer() {
             }}>Legal</h6>
             <ul className="list-unstyled">
               <li className="mb-2">
-                <a href="#" style={{
+                <a href="#" className="footer-link" style={{
                   color: 'rgba(255,255,255,0.6)',
                   textDecoration: 'none',
                   fontSize: '0.9rem',
                   transition: 'color 0.2s'
-                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Privacy Policy</a>
+                }}>Privacy Policy</a>
               </li>
               <li className="mb-2">
-                <a href="#" style={{
+                <a href="#" className="footer-link" style={{
                   color: 'rgba(255,255,255,0.6)',
                   textDecoration: 'none',
                   fontSize: '0.9rem',
                   transition: 'color 0.2s'
-                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Terms of Service</a>
+                }}>Terms of Service</a>
               </li>
             </ul>
           </div>

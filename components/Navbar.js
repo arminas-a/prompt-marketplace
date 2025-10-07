@@ -60,17 +60,15 @@ export default function Navbar() {
           <div className="d-flex align-items-center gap-1">
             <Link
               href="/"
+              className="nav-link-hover"
               style={{
                 color: '#fff',
                 padding: '0.5rem 1rem',
                 fontFamily: 'Georgia, serif',
                 fontSize: '0.95rem',
                 textDecoration: 'none',
-                borderBottom: '2px solid transparent',
                 transition: 'all 0.2s'
               }}
-              onMouseOver={(e) => e.target.style.borderBottom = '2px solid #fff'}
-              onMouseOut={(e) => e.target.style.borderBottom = '2px solid transparent'}
             >
               Browse
             </Link>
@@ -79,6 +77,7 @@ export default function Navbar() {
               <>
                 <Link
                   href="/sell"
+                  className="nav-link-hover"
                   style={{
                     color: '#fff',
                     padding: '0.5rem 1rem',
@@ -87,13 +86,12 @@ export default function Navbar() {
                     textDecoration: 'none',
                     transition: 'all 0.2s'
                   }}
-                  onMouseOver={(e) => e.target.style.borderBottom = '2px solid #fff'}
-                  onMouseOut={(e) => e.target.style.borderBottom = '2px solid transparent'}
                 >
                   Sell
                 </Link>
                 <Link
                   href="/account"
+                  className="nav-link-hover"
                   style={{
                     color: '#fff',
                     padding: '0.5rem 1rem',
@@ -102,8 +100,6 @@ export default function Navbar() {
                     textDecoration: 'none',
                     transition: 'all 0.2s'
                   }}
-                  onMouseOver={(e) => e.target.style.borderBottom = '2px solid #fff'}
-                  onMouseOut={(e) => e.target.style.borderBottom = '2px solid transparent'}
                 >
                   Account
                 </Link>
@@ -124,6 +120,7 @@ export default function Navbar() {
                 )}
                 <button
                   onClick={handleLogout}
+                  className="nav-link-hover"
                   style={{
                     color: '#fff',
                     padding: '0.5rem 1rem',
@@ -132,10 +129,9 @@ export default function Navbar() {
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s',
+                    textDecoration: 'none'
                   }}
-                  onMouseOver={(e) => e.target.style.textDecoration = 'underline'}
-                  onMouseOut={(e) => e.target.style.textDecoration = 'none'}
                 >
                   Logout
                 </button>
@@ -144,6 +140,7 @@ export default function Navbar() {
               <>
                 <Link
                   href="/login"
+                  className="nav-link-hover"
                   style={{
                     color: '#fff',
                     padding: '0.5rem 1rem',
@@ -152,13 +149,12 @@ export default function Navbar() {
                     textDecoration: 'none',
                     transition: 'all 0.2s'
                   }}
-                  onMouseOver={(e) => e.target.style.textDecoration = 'underline'}
-                  onMouseOut={(e) => e.target.style.textDecoration = 'none'}
                 >
                   Login
                 </Link>
                 <Link
                   href="/signup"
+                  className="btn-signup"
                   style={{
                     backgroundColor: 'var(--ft-blue)',
                     color: '#fff',
@@ -168,15 +164,8 @@ export default function Navbar() {
                     textDecoration: 'none',
                     marginLeft: '0.5rem',
                     transition: 'all 0.2s',
-                    border: '1px solid var(--ft-blue)'
-                  }}
-                  onMouseOver={(e) => {
-                    e.target.style.backgroundColor = 'var(--ft-dark-blue)'
-                    e.target.style.borderColor = 'var(--ft-dark-blue)'
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.backgroundColor = 'var(--ft-blue)'
-                    e.target.style.borderColor = 'var(--ft-blue)'
+                    border: '1px solid var(--ft-blue)',
+                    display: 'inline-block'
                   }}
                 >
                   Sign Up

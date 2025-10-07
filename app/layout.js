@@ -111,6 +111,33 @@ export default function RootLayout({ children }) {
             font-family: Georgia, serif !important;
             padding: 0.35em 0.65em !important;
           }
+          
+          /* Navigation hover effects */
+          .nav-link-hover:hover {
+            text-decoration: underline !important;
+          }
+          
+          .btn-signup:hover {
+            background-color: var(--ft-dark-blue) !important;
+            border-color: var(--ft-dark-blue) !important;
+          }
+          
+          /* Footer hover effects */
+          .footer-link:hover {
+            color: #fff !important;
+          }
+          
+          /* Button hover effects */
+          .btn-view-details:hover {
+            background-color: var(--ft-blue) !important;
+            border-color: var(--ft-blue) !important;
+          }
+          
+          /* Card hover effects */
+          .prompt-card-hover:hover {
+            border-color: var(--ft-black) !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+          }
         `}</style>
       </head>
       <body className="d-flex flex-column min-vh-100">
