@@ -1,28 +1,39 @@
-import { supabase } from '../../../lib/supabase'
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
 
 export const revalidate = 0
 
 async function getPurchase(token) {
-  const { data, error } = await supabase
-    .from('purchases')
-    .select(`
-      *,
-      prompt:prompts(*)
-    `)
-    .eq('access_token', token)
-    .single()
+  try {
+    const { data, error } = await supabase
+      .from('purchases')
+      .select(`
+        *,
+        prompt:prompts(*)
+      `)
+      .eq('access_token', token)
+      .single()
 
-  if (error || !data) {
+    if (error) {
+      console.error('Purchase fetch error:', error)
+      return null
+    }
+
+    return data
+  } catch (error) {
+    console.error('Unexpected error fetching purchase:', error)
     return null
   }
-
-  return data
 }
 
 export default async function PurchasePage({ params }) {
   const purchase = await getPurchase(params.token)
 
-  if (!purchase) {
+  if (!purchase || !purchase.prompt) {
     return (
       <div className="container mt-5">
         <div className="alert alert-danger">
@@ -37,7 +48,7 @@ export default async function PurchasePage({ params }) {
   const prompt = purchase.prompt
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 mb-5">
       <div className="row justify-content-center">
         <div className="col-lg-8">
           <div className="alert alert-success">
@@ -55,7 +66,7 @@ export default async function PurchasePage({ params }) {
               <h5>Your Prompt:</h5>
               <div className="bg-light p-4 rounded">
                 <pre style={{whiteSpace: 'pre-wrap', fontFamily: 'monospace', margin: 0}}>
-                  {prompt.prompt_text}
+{prompt.prompt_text}
                 </pre>
               </div>
 
@@ -63,8 +74,10 @@ export default async function PurchasePage({ params }) {
                 <button 
                   className="btn btn-primary"
                   onClick={() => {
-                    navigator.clipboard.writeText(prompt.prompt_text)
-                    alert('Copied to clipboard!')
+                    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                      navigator.clipboard.writeText(prompt.prompt_text)
+                      alert('Copied to clipboard!')
+                    }
                   }}
                 >
                   📋 Copy to Clipboard
@@ -74,8 +87,8 @@ export default async function PurchasePage({ params }) {
           </div>
 
           <div className="alert alert-info mt-4">
-            <h6>Bookmark this page!</h6>
-            <p className="mb-0">Save this URL to access your prompt anytime: {typeof window !== 'undefined' && window.location.href}</p>
+            <h6>📌 Bookmark this page!</h6>
+            <p className="mb-0">Save this URL to access your prompt anytime.</p>
           </div>
         </div>
       </div>

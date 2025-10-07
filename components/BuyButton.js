@@ -3,22 +3,60 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 
-export default function BuyButton({ promptId, price }) {
+export default function BuyButton({ promptId, price, sellerId }) {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [showEmailInput, setShowEmailInput] = useState(false)
   const [user, setUser] = useState(null)
+  const [alreadyPurchased, setAlreadyPurchased] = useState(false)
+  const [isOwnPrompt, setIsOwnPrompt] = useState(false)
+  const [checkingPurchase, setCheckingPurchase] = useState(true)
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) {
-        setUser(user)
-        setEmail(user.email)
-      }
-    })
+    checkUserAndPurchase()
   }, [])
 
+  async function checkUserAndPurchase() {
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (user) {
+      setUser(user)
+      setEmail(user.email)
+      
+      // Check if this is user's own prompt
+      if (sellerId === user.id) {
+        setIsOwnPrompt(true)
+        setCheckingPurchase(false)
+        return
+      }
+      
+      // Check if already purchased
+      const { data } = await supabase
+        .from('purchases')
+        .select('id')
+        .eq('prompt_id', promptId)
+        .eq('buyer_email', user.email)
+        .maybeSingle()
+      
+      if (data) {
+        setAlreadyPurchased(true)
+      }
+    }
+    
+    setCheckingPurchase(false)
+  }
+
   async function handleBuy() {
+    if (isOwnPrompt) {
+      alert('You cannot purchase your own prompt!')
+      return
+    }
+
+    if (alreadyPurchased) {
+      alert('You have already purchased this prompt! Check your email or account dashboard.')
+      return
+    }
+
     if (!showEmailInput) {
       setShowEmailInput(true)
       return
@@ -26,6 +64,19 @@ export default function BuyButton({ promptId, price }) {
 
     if (!email || !email.includes('@')) {
       alert('Please enter a valid email address')
+      return
+    }
+
+    // Check again if purchased with this email (for guest users)
+    const { data: existingPurchase } = await supabase
+      .from('purchases')
+      .select('id')
+      .eq('prompt_id', promptId)
+      .eq('buyer_email', email)
+      .maybeSingle()
+
+    if (existingPurchase) {
+      alert('This email has already purchased this prompt! Check your email inbox for the prompt.')
       return
     }
 
@@ -49,14 +100,7 @@ export default function BuyButton({ promptId, price }) {
       const data = await response.json()
 
       if (data.url) {
-        try {
-          // Ensure the URL is valid
-          const checkoutUrl = new URL(data.url);
-          window.location.href = checkoutUrl.toString();
-        } catch (urlError) {
-          console.error('Invalid checkout URL:', data.url);
-          throw new Error('Invalid checkout URL received from server');
-        }
+        window.location.href = data.url
       } else {
         throw new Error('No checkout URL returned')
       }
@@ -65,6 +109,32 @@ export default function BuyButton({ promptId, price }) {
       alert('Error: ' + error.message)
       setLoading(false)
     }
+  }
+
+  if (checkingPurchase) {
+    return (
+      <div className="text-center">
+        <div className="spinner-border spinner-border-sm" role="status"></div>
+      </div>
+    )
+  }
+
+  if (isOwnPrompt) {
+    return (
+      <div className="alert alert-info mb-0">
+        <strong>This is your prompt</strong>
+        <p className="mb-0 small">You cannot purchase your own prompts.</p>
+      </div>
+    )
+  }
+
+  if (alreadyPurchased) {
+    return (
+      <div className="alert alert-success mb-0">
+        <strong>✓ Already Purchased</strong>
+        <p className="mb-0 small">Check your email or <a href="/account">account dashboard</a> to access this prompt.</p>
+      </div>
+    )
   }
 
   return (

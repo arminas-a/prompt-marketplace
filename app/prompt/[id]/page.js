@@ -1,8 +1,3 @@
-// ============================================
-// FILE: app/prompt/[id]/page.js (REPLACE ENTIRE FILE)
-// LOCATION: app/prompt/[id]/page.js
-// Fixed: Removed non-existent PurchasedPrompt import
-// ============================================
 import { supabase } from '../../../lib/supabase'
 import BuyButton from '../../../components/BuyButton'
 
@@ -120,7 +115,11 @@ export default async function PromptDetailPage({ params }) {
           <div className="card sticky-top shadow-lg" style={{top: '20px', border: '2px solid #667eea'}}>
             <div className="card-body">
               <h4 className="card-title mb-3 text-center">${prompt.price}</h4>
-              <BuyButton promptId={prompt.id} price={prompt.price} />
+              <BuyButton 
+                promptId={prompt.id} 
+                price={prompt.price}
+                sellerId={prompt.seller_id}
+              />
               
               <div className="mt-3 text-muted small">
                 <p className="mb-1">✓ Instant email delivery</p>
