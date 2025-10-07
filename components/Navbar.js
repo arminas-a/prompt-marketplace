@@ -39,59 +39,151 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav style={{
+      backgroundColor: 'var(--ft-black)',
+      borderBottom: '1px solid #000',
+      padding: '0'
+    }}>
       <div className="container">
-        <Link href="/" className="navbar-brand fw-bold">
-          PromptHub
-        </Link>
-        
-        <button 
-          className="navbar-toggler" 
-          type="button" 
-          data-bs-toggle="collapse" 
-          data-bs-target="#navbarNav"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link href="/" className="nav-link">Browse</Link>
-            </li>
+        <div className="d-flex justify-content-between align-items-center" style={{height: '64px'}}>
+          <Link href="/" style={{
+            fontFamily: 'Georgia, serif',
+            fontSize: '1.5rem',
+            fontWeight: '700',
+            color: '#fff',
+            textDecoration: 'none',
+            letterSpacing: '-0.5px'
+          }}>
+            Prompt Marketplace
+          </Link>
+          
+          <div className="d-flex align-items-center gap-1">
+            <Link
+              href="/"
+              style={{
+                color: '#fff',
+                padding: '0.5rem 1rem',
+                fontFamily: 'Georgia, serif',
+                fontSize: '0.95rem',
+                textDecoration: 'none',
+                borderBottom: '2px solid transparent',
+                transition: 'all 0.2s'
+              }}
+              onMouseOver={(e) => e.target.style.borderBottom = '2px solid #fff'}
+              onMouseOut={(e) => e.target.style.borderBottom = '2px solid transparent'}
+            >
+              Browse
+            </Link>
             
             {user ? (
               <>
-                <li className="nav-item">
-                  <Link href="/sell" className="nav-link">Sell Prompts</Link>
-                </li>
-                <li className="nav-item">
-                  <Link href="/account" className="nav-link">My Account</Link>
-                </li>
+                <Link
+                  href="/sell"
+                  style={{
+                    color: '#fff',
+                    padding: '0.5rem 1rem',
+                    fontFamily: 'Georgia, serif',
+                    fontSize: '0.95rem',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => e.target.style.borderBottom = '2px solid #fff'}
+                  onMouseOut={(e) => e.target.style.borderBottom = '2px solid transparent'}
+                >
+                  Sell
+                </Link>
+                <Link
+                  href="/account"
+                  style={{
+                    color: '#fff',
+                    padding: '0.5rem 1rem',
+                    fontFamily: 'Georgia, serif',
+                    fontSize: '0.95rem',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => e.target.style.borderBottom = '2px solid #fff'}
+                  onMouseOut={(e) => e.target.style.borderBottom = '2px solid transparent'}
+                >
+                  Account
+                </Link>
                 {isAdmin && (
-                  <li className="nav-item">
-                    <Link href="/admin" className="nav-link text-warning">Admin</Link>
-                  </li>
+                  <Link
+                    href="/admin"
+                    style={{
+                      color: 'var(--ft-pink)',
+                      padding: '0.5rem 1rem',
+                      fontFamily: 'Georgia, serif',
+                      fontSize: '0.95rem',
+                      textDecoration: 'none',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    Admin
+                  </Link>
                 )}
-                <li className="nav-item">
-                  <button onClick={handleLogout} className="nav-link btn btn-link">
-                    Logout
-                  </button>
-                </li>
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    color: '#fff',
+                    padding: '0.5rem 1rem',
+                    fontFamily: 'Georgia, serif',
+                    fontSize: '0.95rem',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => e.target.style.textDecoration = 'underline'}
+                  onMouseOut={(e) => e.target.style.textDecoration = 'none'}
+                >
+                  Logout
+                </button>
               </>
             ) : (
               <>
-                <li className="nav-item">
-                  <Link href="/login" className="nav-link">Login</Link>
-                </li>
-                <li className="nav-item">
-                  <Link href="/signup" className="btn btn-primary ms-2">
-                    Sign Up to Sell
-                  </Link>
-                </li>
+                <Link
+                  href="/login"
+                  style={{
+                    color: '#fff',
+                    padding: '0.5rem 1rem',
+                    fontFamily: 'Georgia, serif',
+                    fontSize: '0.95rem',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => e.target.style.textDecoration = 'underline'}
+                  onMouseOut={(e) => e.target.style.textDecoration = 'none'}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  style={{
+                    backgroundColor: 'var(--ft-blue)',
+                    color: '#fff',
+                    padding: '0.5rem 1.5rem',
+                    fontFamily: 'Georgia, serif',
+                    fontSize: '0.95rem',
+                    textDecoration: 'none',
+                    marginLeft: '0.5rem',
+                    transition: 'all 0.2s',
+                    border: '1px solid var(--ft-blue)'
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.backgroundColor = 'var(--ft-dark-blue)'
+                    e.target.style.borderColor = 'var(--ft-dark-blue)'
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.backgroundColor = 'var(--ft-blue)'
+                    e.target.style.borderColor = 'var(--ft-blue)'
+                  }}
+                >
+                  Sign Up
+                </Link>
               </>
             )}
-          </ul>
+          </div>
         </div>
       </div>
     </nav>

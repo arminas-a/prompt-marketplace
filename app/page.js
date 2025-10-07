@@ -95,191 +95,293 @@ export default function HomePage() {
   }
 
   return (
-    <div className="container mt-5 mb-5">
-      {/* Hero Section */}
-      <div className="text-center mb-5 py-5">
-        <div className="mb-4">
-          <span className="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill">
-            <i className="bi bi-robot me-2"></i>
-            AI-Powered Business Solutions
-          </span>
-        </div>
-        <h1 className="display-3 fw-bold mb-3">
-          Corporate AI Prompts<br/>
-          <span className="text-primary">Marketplace</span>
+    <div className="container" style={{marginTop: '3rem', marginBottom: '4rem'}}>
+      {/* Hero Section - FT Style */}
+      <div style={{
+        borderBottom: '4px solid var(--ft-black)',
+        paddingBottom: '3rem',
+        marginBottom: '3rem'
+      }}>
+        <h1 style={{
+          fontFamily: 'Georgia, serif',
+          fontSize: '3.5rem',
+          fontWeight: '700',
+          color: 'var(--ft-black)',
+          lineHeight: '1.1',
+          marginBottom: '1.5rem',
+          letterSpacing: '-1px'
+        }}>
+          Professional AI Prompts<br/>
+          for Business Leaders
         </h1>
-        <p className="lead text-muted mb-4 mx-auto" style={{maxWidth: '600px'}}>
-          Professional, tested prompts for Legal, Compliance, HR, Finance & more.<br/>
-          <strong>Work less. 😊 Be happy more.</strong>
+        <p style={{
+          fontFamily: 'Georgia, serif',
+          fontSize: '1.25rem',
+          color: 'var(--ft-grey)',
+          lineHeight: '1.6',
+          maxWidth: '700px',
+          marginBottom: '2rem'
+        }}>
+          Curated, verified prompts for Legal, Compliance, HR, Finance and more. 
+          Trusted by industry professionals.
         </p>
-        <div className="d-flex gap-3 justify-content-center flex-wrap mb-4">
-          <div className="text-center">
-            <div className="fs-3 fw-bold text-primary">{prompts.length}+</div>
-            <small className="text-muted">Prompts</small>
+        
+        <div className="d-flex gap-4 mb-4" style={{
+          borderTop: '1px solid var(--ft-border)',
+          borderBottom: '1px solid var(--ft-border)',
+          padding: '1.5rem 0'
+        }}>
+          <div>
+            <div style={{
+              fontFamily: 'Georgia, serif',
+              fontSize: '2.5rem',
+              fontWeight: '700',
+              color: 'var(--ft-black)'
+            }}>{prompts.length}</div>
+            <div style={{
+              fontFamily: 'Georgia, serif',
+              fontSize: '0.9rem',
+              color: 'var(--ft-grey)',
+              textTransform: 'uppercase',
+              letterSpacing: '1px'
+            }}>Verified Prompts</div>
           </div>
-          <div className="text-center">
-            <div className="fs-3 fw-bold text-success">4.8★</div>
-            <small className="text-muted">Avg Rating</small>
+          <div style={{borderLeft: '1px solid var(--ft-border)', paddingLeft: '2rem'}}>
+            <div style={{
+              fontFamily: 'Georgia, serif',
+              fontSize: '2.5rem',
+              fontWeight: '700',
+              color: 'var(--ft-black)'
+            }}>4.8★</div>
+            <div style={{
+              fontFamily: 'Georgia, serif',
+              fontSize: '0.9rem',
+              color: 'var(--ft-grey)',
+              textTransform: 'uppercase',
+              letterSpacing: '1px'
+            }}>Average Rating</div>
           </div>
-          <div className="text-center">
-            <div className="fs-3 fw-bold text-info">$29</div>
-            <small className="text-muted">Avg Price</small>
+          <div style={{borderLeft: '1px solid var(--ft-border)', paddingLeft: '2rem'}}>
+            <div style={{
+              fontFamily: 'Georgia, serif',
+              fontSize: '2.5rem',
+              fontWeight: '700',
+              color: 'var(--ft-black)'
+            }}>$29</div>
+            <div style={{
+              fontFamily: 'Georgia, serif',
+              fontSize: '0.9rem',
+              color: 'var(--ft-grey)',
+              textTransform: 'uppercase',
+              letterSpacing: '1px'
+            }}>Typical Price</div>
           </div>
         </div>
+
         {!loading && prompts.length > 0 && (
-          <div className="d-flex gap-2 justify-content-center">
-            <a href="#prompts" className="btn btn-primary btn-lg">
-              <i className="bi bi-search me-2"></i>
-              Browse Prompts
+          <div className="d-flex gap-3">
+            <a href="#prompts" className="btn btn-primary" style={{
+              padding: '0.85rem 2rem',
+              fontSize: '1rem'
+            }}>
+              Browse Marketplace
             </a>
-            <a href="/sell" className="btn btn-outline-primary btn-lg">
-              <i className="bi bi-upload me-2"></i>
-              Sell Your Prompts
+            <a href="/sell" className="btn btn-outline-primary" style={{
+              padding: '0.85rem 2rem',
+              fontSize: '1rem'
+            }}>
+              Become a Seller
             </a>
           </div>
         )}
       </div>
 
-      {/* Features Section */}
-      <div className="row mb-5 g-4" id="features">
-        <div className="col-md-4">
-          <div className="card h-100 border-0 shadow-sm text-center p-3">
-            <div className="card-body">
-              <div className="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                <i className="bi bi-lightning-charge-fill text-primary fs-1"></i>
-              </div>
-              <h5 className="card-title">Instant Delivery</h5>
-              <p className="card-text text-muted">
-                Get your prompt immediately via email. No waiting, no hassle.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card h-100 border-0 shadow-sm text-center p-3">
-            <div className="card-body">
-              <div className="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                <i className="bi bi-shield-check text-success fs-1"></i>
-              </div>
-              <h5 className="card-title">Quality Tested</h5>
-              <p className="card-text text-muted">
-                All prompts are tested and optimized for professional use.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card h-100 border-0 shadow-sm text-center p-3">
-            <div className="card-body">
-              <div className="bg-info bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                <i className="bi bi-infinity text-info fs-1"></i>
-              </div>
-              <h5 className="card-title">Lifetime Access</h5>
-              <p className="card-text text-muted">
-                One-time payment. Access your prompt forever with a unique link.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div id="prompts"></div>
 
-      {/* Search & Filter Bar */}
-      <div className="card mb-4 shadow-sm">
-        <div className="card-body">
-          <div className="row g-3">
-            {/* Search */}
-            <div className="col-md-5">
-              <div className="input-group">
-                <span className="input-group-text">
-                  <i className="bi bi-search"></i>
-                </span>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search prompts..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                {searchTerm && (
-                  <button 
-                    className="btn btn-outline-secondary"
-                    onClick={() => setSearchTerm('')}
-                  >
-                    <i className="bi bi-x"></i>
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Category Filter */}
-            <div className="col-md-4">
-              <select
-                className="form-select"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                {categories.map(cat => (
-                  <option key={cat} value={cat.toLowerCase()}>
-                    {cat === 'All' ? '📂 All Categories' : `📁 ${cat}`}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Sort */}
-            <div className="col-md-3">
-              <select
-                className="form-select"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <option value="newest">🕐 Newest First</option>
-                <option value="oldest">🕐 Oldest First</option>
-                <option value="price-low">💰 Price: Low to High</option>
-                <option value="price-high">💰 Price: High to Low</option>
-                <option value="title">🔤 A-Z</option>
-              </select>
-            </div>
+      {/* Search & Filter Bar - FT Style */}
+      <div style={{
+        border: '1px solid var(--ft-border)',
+        backgroundColor: 'var(--ft-pink)',
+        padding: '1.5rem',
+        marginBottom: '2rem'
+      }}>
+        <div className="row g-3">
+          {/* Search */}
+          <div className="col-md-5">
+            <label style={{
+              display: 'block',
+              fontFamily: 'Georgia, serif',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              color: 'var(--ft-black)',
+              marginBottom: '0.5rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>Search</label>
+            <input
+              type="text"
+              className="form-control"
+              style={{
+                fontFamily: 'Georgia, serif',
+                border: '1px solid var(--ft-black)',
+                padding: '0.65rem 1rem'
+              }}
+                  placeholder="Search by title, description..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
 
-          {/* Active Filters */}
-          {(searchTerm || selectedCategory !== 'all') && (
-            <div className="mt-3 d-flex gap-2 align-items-center flex-wrap">
-              <small className="text-muted">Active filters:</small>
-              {searchTerm && (
-                <span className="badge bg-primary">
-                  Search: "{searchTerm}"
-                  <button 
-                    className="btn-close btn-close-white ms-2" 
-                    style={{ fontSize: '0.6rem' }}
-                    onClick={() => setSearchTerm('')}
-                  ></button>
-                </span>
-              )}
-              {selectedCategory !== 'all' && (
-                <span className="badge bg-info">
-                  Category: {selectedCategory}
-                  <button 
-                    className="btn-close btn-close-white ms-2"
-                    style={{ fontSize: '0.6rem' }}
-                    onClick={() => setSelectedCategory('all')}
-                  ></button>
-                </span>
-              )}
-              <button 
-                className="btn btn-sm btn-link text-decoration-none"
-                onClick={() => {
-                  setSearchTerm('')
-                  setSelectedCategory('all')
-                }}
-              >
-                Clear all
-              </button>
-            </div>
-          )}
+          {/* Category Filter */}
+          <div className="col-md-4">
+            <label style={{
+              display: 'block',
+              fontFamily: 'Georgia, serif',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              color: 'var(--ft-black)',
+              marginBottom: '0.5rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>Category</label>
+            <select
+              className="form-select"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              style={{
+                fontFamily: 'Georgia, serif',
+                border: '1px solid var(--ft-black)',
+                padding: '0.65rem 1rem'
+              }}
+            >
+              {categories.map(cat => (
+                <option key={cat} value={cat.toLowerCase()}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Sort */}
+          <div className="col-md-3">
+            <label style={{
+              display: 'block',
+              fontFamily: 'Georgia, serif',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              color: 'var(--ft-black)',
+              marginBottom: '0.5rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>Sort By</label>
+            <select
+              className="form-select"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              style={{
+                fontFamily: 'Georgia, serif',
+                border: '1px solid var(--ft-black)',
+                padding: '0.65rem 1rem'
+              }}
+            >
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="price-low">Price: Low-High</option>
+              <option value="price-high">Price: High-Low</option>
+              <option value="title">Alphabetical</option>
+            </select>
+          </div>
         </div>
+
+        {/* Active Filters */}
+        {(searchTerm || selectedCategory !== 'all') && (
+          <div style={{
+            marginTop: '1rem',
+            paddingTop: '1rem',
+            borderTop: '1px solid var(--ft-border)',
+            display: 'flex',
+            gap: '0.75rem',
+            alignItems: 'center',
+            flexWrap: 'wrap'
+          }}>
+            <span style={{
+              fontFamily: 'Georgia, serif',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              color: 'var(--ft-grey)'
+            }}>Active:</span>
+            {searchTerm && (
+              <span style={{
+                backgroundColor: 'var(--ft-black)',
+                color: '#fff',
+                padding: '0.25rem 0.75rem',
+                fontSize: '0.85rem',
+                fontFamily: 'Georgia, serif',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}>
+                "{searchTerm}"
+                <button 
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    padding: '0',
+                    fontSize: '1.2rem',
+                    lineHeight: '1'
+                  }}
+                  onClick={() => setSearchTerm('')}
+                >×</button>
+              </span>
+            )}
+            {selectedCategory !== 'all' && (
+              <span style={{
+                backgroundColor: 'var(--ft-black)',
+                color: '#fff',
+                padding: '0.25rem 0.75rem',
+                fontSize: '0.85rem',
+                fontFamily: 'Georgia, serif',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}>
+                {selectedCategory}
+                <button 
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    padding: '0',
+                    fontSize: '1.2rem',
+                    lineHeight: '1'
+                  }}
+                  onClick={() => setSelectedCategory('all')}
+                >×</button>
+              </span>
+            )}
+            <button 
+              style={{
+                fontFamily: 'Georgia, serif',
+                fontSize: '0.85rem',
+                color: 'var(--ft-blue)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                textDecoration: 'underline',
+                padding: '0'
+              }}
+              onClick={() => {
+                setSearchTerm('')
+                setSelectedCategory('all')
+              }}
+            >
+              Clear all
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Results */}

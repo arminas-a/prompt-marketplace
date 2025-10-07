@@ -2,145 +2,145 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
   
   return (
-    <>
-      <style dangerouslySetInnerHTML={{__html: `
-        .footer-hover-link {
-          transition: all 0.3s ease;
-        }
-        .footer-hover-link:hover {
-          color: #667eea !important;
-          transform: translateX(5px);
-        }
-        .footer-hover-effect {
-          transition: all 0.3s ease;
-        }
-        .footer-hover-effect:hover {
-          color: #667eea !important;
-          transform: translateY(-3px);
-        }
-      `}} />
-      
-      <footer className="mt-auto" style={{
-        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-        color: '#ffffff',
-        borderTop: '1px solid rgba(255,255,255,0.1)'
-      }}>
-        <div className="container py-5">
-          <div className="row">
-            <div className="col-lg-4 mb-4">
-              <h3 className="fw-bold mb-3" style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}>
-                PromptHub
-              </h3>
-              <p className="text-white-50 mb-3">
-                Professional AI prompts for the modern workforce.
-                Empowering professionals to work smarter, not harder.
-              </p>
-              <div className="d-flex gap-3">
-                <a href="#" className="text-white-50 footer-hover-effect">
-                  <i className="bi bi-twitter" style={{fontSize: '1.5rem'}}></i>
-                </a>
-                <a href="#" className="text-white-50 footer-hover-effect">
-                  <i className="bi bi-linkedin" style={{fontSize: '1.5rem'}}></i>
-                </a>
-                <a href="#" className="text-white-50 footer-hover-effect">
-                  <i className="bi bi-github" style={{fontSize: '1.5rem'}}></i>
-                </a>
-              </div>
-            </div>
-
-            <div className="col-lg-2 col-md-4 mb-4">
-              <h6 className="text-uppercase mb-3 fw-bold">Marketplace</h6>
-              <ul className="list-unstyled">
-                <li className="mb-2">
-                  <a href="/" className="text-white-50 text-decoration-none footer-hover-link">Browse Prompts</a>
-                </li>
-                <li className="mb-2">
-                  <a href="/sell" className="text-white-50 text-decoration-none footer-hover-link">Sell Prompts</a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">Top Sellers</a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">New Releases</a>
-                </li>
-              </ul>
-            </div>
-
-            <div className="col-lg-2 col-md-4 mb-4">
-              <h6 className="text-uppercase mb-3 fw-bold">Categories</h6>
-              <ul className="list-unstyled">
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">Legal</a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">Compliance</a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">HR</a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">Finance</a>
-                </li>
-              </ul>
-            </div>
-
-            <div className="col-lg-2 col-md-4 mb-4">
-              <h6 className="text-uppercase mb-3 fw-bold">Resources</h6>
-              <ul className="list-unstyled">
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">Documentation</a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">API</a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">Support</a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">Blog</a>
-                </li>
-              </ul>
-            </div>
-
-            <div className="col-lg-2 col-md-4 mb-4">
-              <h6 className="text-uppercase mb-3 fw-bold">Legal</h6>
-              <ul className="list-unstyled">
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">Privacy Policy</a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">Terms of Service</a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">Cookie Policy</a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white-50 text-decoration-none footer-hover-link">Refund Policy</a>
-                </li>
-              </ul>
-            </div>
+    <footer style={{
+      backgroundColor: 'var(--ft-black)',
+      color: 'rgba(255,255,255,0.8)',
+      borderTop: '1px solid rgba(255,255,255,0.1)',
+      marginTop: 'auto',
+      padding: '3rem 0 1.5rem 0',
+      fontFamily: 'Georgia, serif'
+    }}>
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-4 mb-4">
+            <h5 style={{
+              fontFamily: 'Georgia, serif',
+              fontSize: '1.5rem',
+              fontWeight: '700',
+              color: '#fff',
+              marginBottom: '1rem',
+              letterSpacing: '-0.5px'
+            }}>
+              Prompt Marketplace
+            </h5>
+            <p style={{
+              color: 'rgba(255,255,255,0.6)',
+              lineHeight: '1.6',
+              marginBottom: '1rem',
+              fontSize: '0.95rem'
+            }}>
+              A premium marketplace for professional AI prompts. Curated, verified, and trusted by industry leaders.
+            </p>
           </div>
 
-          <div className="row mt-4 pt-4" style={{borderTop: '1px solid rgba(255,255,255,0.1)'}}>
-            <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
-              <p className="text-white-50 mb-0">
-                © {currentYear} PromptHub. All rights reserved.
-              </p>
-            </div>
-            <div className="col-md-6 text-center text-md-end">
-              <p className="text-white-50 mb-0">
-                <span className="me-3">🚀 Work less.</span>
-                <span>😊 Be happy more.</span>
-              </p>
-            </div>
+          <div className="col-lg-2 col-md-4 mb-4">
+            <h6 style={{
+              fontSize: '0.75rem',
+              fontWeight: '700',
+              color: 'rgba(255,255,255,0.9)',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              marginBottom: '1rem'
+            }}>Marketplace</h6>
+            <ul className="list-unstyled">
+              <li className="mb-2">
+                <a href="/" style={{
+                  color: 'rgba(255,255,255,0.6)',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  transition: 'color 0.2s'
+                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Browse Prompts</a>
+              </li>
+              <li className="mb-2">
+                <a href="/sell" style={{
+                  color: 'rgba(255,255,255,0.6)',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  transition: 'color 0.2s'
+                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Sell Prompts</a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="col-lg-2 col-md-4 mb-4">
+            <h6 style={{
+              fontSize: '0.75rem',
+              fontWeight: '700',
+              color: 'rgba(255,255,255,0.9)',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              marginBottom: '1rem'
+            }}>Categories</h6>
+            <ul className="list-unstyled">
+              <li className="mb-2">
+                <a href="#" style={{
+                  color: 'rgba(255,255,255,0.6)',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  transition: 'color 0.2s'
+                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Legal</a>
+              </li>
+              <li className="mb-2">
+                <a href="#" style={{
+                  color: 'rgba(255,255,255,0.6)',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  transition: 'color 0.2s'
+                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Compliance</a>
+              </li>
+              <li className="mb-2">
+                <a href="#" style={{
+                  color: 'rgba(255,255,255,0.6)',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  transition: 'color 0.2s'
+                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>HR & Finance</a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="col-lg-2 col-md-4 mb-4">
+            <h6 style={{
+              fontSize: '0.75rem',
+              fontWeight: '700',
+              color: 'rgba(255,255,255,0.9)',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              marginBottom: '1rem'
+            }}>Legal</h6>
+            <ul className="list-unstyled">
+              <li className="mb-2">
+                <a href="#" style={{
+                  color: 'rgba(255,255,255,0.6)',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  transition: 'color 0.2s'
+                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Privacy Policy</a>
+              </li>
+              <li className="mb-2">
+                <a href="#" style={{
+                  color: 'rgba(255,255,255,0.6)',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  transition: 'color 0.2s'
+                }} onMouseOver={(e) => e.target.style.color = '#fff'} onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.6)'}>Terms of Service</a>
+              </li>
+            </ul>
           </div>
         </div>
-      </footer>
-    </>
+
+        <div className="row mt-4 pt-4" style={{borderTop: '1px solid rgba(255,255,255,0.1)'}}>
+          <div className="col-12 text-center">
+            <p style={{
+              color: 'rgba(255,255,255,0.5)',
+              fontSize: '0.875rem',
+              marginBottom: 0
+            }}>
+              © {currentYear} Prompt Marketplace. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
   )
 }
