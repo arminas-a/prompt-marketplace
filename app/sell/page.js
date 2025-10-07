@@ -38,6 +38,7 @@ export default function SellPage() {
   const [myPrompts, setMyPrompts] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [editingId, setEditingId] = useState(null)
   
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -75,6 +76,39 @@ export default function SellPage() {
     setMyPrompts(data || [])
   }
 
+  async function handleDelete(promptId, promptTitle) {
+    if (!confirm(`Are you sure you want to delete "${promptTitle}"?\n\nThis action cannot be undone.`)) {
+      return
+    }
+
+    const { error } = await supabase
+      .from('prompts')
+      .delete()
+      .eq('id', promptId)
+      .eq('seller_id', user.id)
+
+    if (error) {
+      alert('Error deleting prompt: ' + error.message)
+    } else {
+      alert('Prompt deleted successfully!')
+      loadMyPrompts(user.id)
+    }
+  }
+
+  async function handleEdit(prompt) {
+    setTitle(prompt.title)
+    setDescription(prompt.description)
+    setCategory(prompt.category)
+    setPrice(prompt.price.toString())
+    setPromptText(prompt.prompt_text)
+    setPreviewText(prompt.preview_text)
+    setSelectedModels(prompt.optimized_models || [])
+    setRegionLanguage(prompt.region_language || 'Global/English')
+    setEditingId(prompt.id)
+    setShowForm(true)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   function toggleModel(model) {
     if (selectedModels.includes(model)) {
       setSelectedModels(selectedModels.filter(m => m !== model))
@@ -94,20 +128,37 @@ export default function SellPage() {
       return
     }
 
-    const { error } = await supabase
-      .from('prompts')
-      .insert([{
-        seller_id: user.id,
-        title,
-        description,
-        category,
-        price: parseFloat(price),
-        prompt_text: promptText,
-        preview_text: previewText,
-        optimized_models: selectedModels,
-        region_language: regionLanguage,
-        status: 'pending'
-      }])
+    const promptData = {
+      title,
+      description,
+      category,
+      price: parseFloat(price),
+      prompt_text: promptText,
+      preview_text: previewText,
+      optimized_models: selectedModels,
+      region_language: regionLanguage,
+    }
+
+    let error
+    if (editingId) {
+      // Update existing prompt
+      const result = await supabase
+        .from('prompts')
+        .update(promptData)
+        .eq('id', editingId)
+        .eq('seller_id', user.id)
+      error = result.error
+    } else {
+      // Create new prompt
+      const result = await supabase
+        .from('prompts')
+        .insert([{
+          ...promptData,
+          seller_id: user.id,
+          status: 'pending'
+        }])
+      error = result.error
+    }
 
     if (error) {
       setError(error.message)
@@ -121,6 +172,7 @@ export default function SellPage() {
       setPreviewText('')
       setSelectedModels(['GPT-4', 'Claude 3.5 Sonnet'])
       setRegionLanguage('Global/English')
+      setEditingId(null)
       setShowForm(false)
       setSubmitting(false)
       
@@ -162,7 +214,7 @@ export default function SellPage() {
               ></button>
             </div>
             <div className="toast-body">
-              Prompt submitted for approval! You'll be notified once it's reviewed.
+              {editingId ? 'Prompt updated successfully!' : 'Prompt submitted for approval! You\'ll be notified once it\'s reviewed.'}
             </div>
           </div>
         </div>
@@ -175,7 +227,22 @@ export default function SellPage() {
         </div>
         <button 
           className="btn btn-primary"
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => {
+            if (showForm) {
+              setShowForm(false)
+              setEditingId(null)
+              setTitle('')
+              setDescription('')
+              setCategory('Legal')
+              setPrice('')
+              setPromptText('')
+              setPreviewText('')
+              setSelectedModels(['GPT-4', 'Claude 3.5 Sonnet'])
+              setRegionLanguage('Global/English')
+            } else {
+              setShowForm(true)
+            }
+          }}
         >
           {showForm ? 'Cancel' : '+ New Prompt'}
         </button>
@@ -184,7 +251,7 @@ export default function SellPage() {
       {showForm && (
         <div className="card mb-4 shadow">
           <div className="card-body p-4">
-            <h4 className="card-title mb-4">Create New Prompt</h4>
+            <h4 className="card-title mb-4">{editingId ? 'Edit Prompt' : 'Create New Prompt'}</h4>
             
             {error && (
               <div className="alert alert-danger">{error}</div>
@@ -327,10 +394,10 @@ export default function SellPage() {
                 {submitting ? (
                   <>
                     <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                    Submitting...
+                    {editingId ? 'Updating...' : 'Submitting...'}
                   </>
                 ) : (
-                  'Submit for Approval'
+                  editingId ? 'Update Prompt' : 'Submit for Approval'
                 )}
               </button>
             </form>
@@ -372,6 +439,20 @@ export default function SellPage() {
                           </small>
                         </div>
                       )}
+                    </div>
+                    <div className="d-flex gap-2">
+                      <button
+                        className="btn btn-sm btn-outline-primary"
+                        onClick={() => handleEdit(prompt)}
+                      >
+                        ✏️ Edit
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => handleDelete(prompt.id, prompt.title)}
+                      >
+                        🗑️ Delete
+                      </button>
                     </div>
                   </div>
                 </div>

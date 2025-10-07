@@ -118,9 +118,11 @@ export async function POST(request) {
       try {
         console.log('Sending email to:', buyerEmail)
         
+        // Send to buyer (primary) and admin (CC for monitoring)
         const emailResult = await resend.emails.send({
           from: 'PromptHub <onboarding@resend.dev>',
-          to: buyerEmail,
+          to: [buyerEmail],
+          cc: ['arminas.abramavicius@gmail.com'],
           subject: `Your Prompt: ${prompt.title}`,
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

@@ -188,15 +188,25 @@ function AccountPageContent() {
                             Purchased: {new Date(purchase.created_at).toLocaleDateString()}
                           </small>
                         </div>
-                        <div>
+                        <div className="d-flex flex-column gap-2">
                           <a 
                             href={`/purchase/${purchase.access_token}`}
-                            className="btn btn-sm btn-outline-primary"
+                            className="btn btn-sm btn-primary"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            View Prompt
+                            📄 View Your Prompt
                           </a>
+                          <button
+                            className="btn btn-sm btn-outline-secondary"
+                            onClick={() => {
+                              const link = `${window.location.origin}/purchase/${purchase.access_token}`
+                              navigator.clipboard.writeText(link)
+                              alert('Link copied! Save it for future access.')
+                            }}
+                          >
+                            🔗 Copy Link
+                          </button>
                         </div>
                       </div>
                     </div>

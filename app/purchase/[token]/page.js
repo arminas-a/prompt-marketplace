@@ -1,3 +1,6 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
@@ -5,33 +8,57 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 )
 
-export const revalidate = 0
+export default function PurchasePage({ params }) {
+  const [purchase, setPurchase] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [copied, setCopied] = useState(false)
 
-async function getPurchase(token) {
-  try {
-    const { data, error } = await supabase
-      .from('purchases')
-      .select(`
-        *,
-        prompt:prompts(*)
-      `)
-      .eq('access_token', token)
-      .single()
+  useEffect(() => {
+    async function fetchPurchase() {
+      try {
+        const { data, error } = await supabase
+          .from('purchases')
+          .select(`
+            *,
+            prompt:prompts(*)
+          `)
+          .eq('access_token', params.token)
+          .single()
 
-    if (error) {
-      console.error('Purchase fetch error:', error)
-      return null
+        if (error) {
+          console.error('Purchase fetch error:', error)
+          setPurchase(null)
+        } else {
+          setPurchase(data)
+        }
+      } catch (error) {
+        console.error('Unexpected error fetching purchase:', error)
+        setPurchase(null)
+      } finally {
+        setLoading(false)
+      }
     }
 
-    return data
-  } catch (error) {
-    console.error('Unexpected error fetching purchase:', error)
-    return null
-  }
-}
+    fetchPurchase()
+  }, [params.token])
 
-export default async function PurchasePage({ params }) {
-  const purchase = await getPurchase(params.token)
+  const handleCopy = () => {
+    navigator.clipboard.writeText(purchase.prompt.prompt_text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  if (loading) {
+    return (
+      <div className="container mt-5">
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (!purchase || !purchase.prompt) {
     return (
@@ -72,12 +99,9 @@ export default async function PurchasePage({ params }) {
 
               <button 
                 className="btn btn-primary"
-                onClick={() => {
-                  navigator.clipboard.writeText(prompt.prompt_text)
-                  alert('Copied to clipboard!')
-                }}
+                onClick={handleCopy}
               >
-                📋 Copy to Clipboard
+                {copied ? '✓ Copied!' : '📋 Copy to Clipboard'}
               </button>
             </div>
           </div>
