@@ -1,8 +1,25 @@
+'use client'
+
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+
 export default function SuccessPage() {
+  const searchParams = useSearchParams()
+  const sessionId = searchParams.get('session_id')
+  const [copied, setCopied] = useState(false)
+
+  const handleCopySessionId = () => {
+    if (sessionId) {
+      navigator.clipboard.writeText(sessionId)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
+  }
+
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
-        <div className="col-md-6">
+        <div className="col-md-8">
           <div className="card">
             <div className="card-body text-center p-5">
               <div className="mb-4">
@@ -10,15 +27,52 @@ export default function SuccessPage() {
               </div>
               <h2 className="mb-3">Payment Successful!</h2>
               <p className="lead mb-4">
-                Check your email for the full prompt and access link.
+                Thank you for your purchase! 🎉
               </p>
               <p className="text-muted mb-4">
-                The prompt has been sent to your email. You also received a unique link for lifetime access.
+                The prompt has been sent to your email with a unique lifetime access link. 
+                You can also view your purchase in your account dashboard.
               </p>
-              <a href="/" className="btn btn-primary">
-                Browse More Prompts
-              </a>
+
+              <div className="alert alert-info text-start mb-4">
+                <h6 className="alert-heading">📧 Check Your Email</h6>
+                <ul className="mb-0 ps-3">
+                  <li>Full prompt text</li>
+                  <li>Lifetime access link</li>
+                  <li>Instructions for use</li>
+                </ul>
+              </div>
+
+              <div className="d-grid gap-3">
+                <a href="/account" className="btn btn-primary btn-lg">
+                  📄 View My Purchases
+                </a>
+                <a href="/" className="btn btn-outline-primary">
+                  Browse More Prompts
+                </a>
+              </div>
+
+              {sessionId && (
+                <div className="mt-4 pt-4 border-top">
+                  <small className="text-muted d-block mb-2">Transaction ID</small>
+                  <div className="d-flex gap-2 justify-content-center align-items-center">
+                    <code className="small text-muted">{sessionId.substring(0, 20)}...</code>
+                    <button 
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={handleCopySessionId}
+                    >
+                      {copied ? '✓' : '📋'}
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
+          </div>
+
+          <div className="text-center mt-4">
+            <p className="text-muted small">
+              💡 Tip: Bookmark your purchase link from the email for easy access
+            </p>
           </div>
         </div>
       </div>
