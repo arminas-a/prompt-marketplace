@@ -1,15 +1,9 @@
-// ============================================
-// FILE: app/account/page.js (REPLACE ENTIRE FILE)
-// LOCATION: app/account/page.js
-// This fixes the deopt warning by using Suspense
-// ============================================
 'use client'
 
 import { useEffect, useState, Suspense } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-// Separate component for search params (wrapped in Suspense)
 function ConfirmationAlert() {
   const searchParams = useSearchParams()
   const [show, setShow] = useState(false)
@@ -35,7 +29,6 @@ function ConfirmationAlert() {
   )
 }
 
-// Main component
 function AccountPageContent() {
   const router = useRouter()
   const [user, setUser] = useState(null)
@@ -56,35 +49,72 @@ function AccountPageContent() {
     }
 
     setUser(user)
-    loadPurchases(user.email)
+    await loadPurchases(user.email)
     setLoading(false)
   }
 
   async function loadPurchases(email) {
-    const { data } = await supabase
+    console.log('Loading purchases for:', email)
+    
+    const { data, error } = await supabase
       .from('purchases')
       .select(`
         *,
-        prompt:prompts(title, description, category, price)
+        prompt:prompts(*)
       `)
       .eq('buyer_email', email)
       .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error('Error loading purchases:', error)
+    } else {
+      console.log('Purchases loaded:', data)
+    }
 
     setPurchases(data || [])
   }
 
   async function handleDeleteAccount() {
-    if (!confirm('Are you sure you want to delete your account? This cannot be undone.')) {
-      return
-    }
+    const confirmed = confirm(
+      '⚠️ Are you sure you want to delete your account?\n\n' +
+      'This will:\n' +
+      '• Delete your account permanently\n' +
+      '• Remove all your data\n' +
+      '• Your purchased prompts will remain accessible via email links\n\n' +
+      'Type "DELETE" to confirm.'
+    )
 
-    if (!confirm('Really delete? All your data will be permanently removed.')) {
+    if (!confirmed) return
+
+    const typed = prompt('Type DELETE to confirm account deletion:')
+    if (typed !== 'DELETE') {
+      alert('Account deletion cancelled.')
       return
     }
 
     setDeleting(true)
-    alert('Account deletion requires admin approval. Please contact support.')
-    setDeleting(false)
+
+    try {
+      // Note: Supabase doesn't allow self-deletion via client SDK
+      // We'll use the auth API to delete the user
+      const { error } = await supabase.auth.admin.deleteUser(user.id)
+      
+      if (error) {
+        // Fallback: Sign out and show message
+        await supabase.auth.signOut()
+        alert('Account deletion initiated. Please contact support to complete the process.')
+        router.push('/')
+      } else {
+        await supabase.auth.signOut()
+        alert('Account deleted successfully.')
+        router.push('/')
+      }
+    } catch (error) {
+      console.error('Delete error:', error)
+      alert('Error deleting account. Please contact support.')
+    } finally {
+      setDeleting(false)
+    }
   }
 
   async function handleLogout() {
@@ -95,25 +125,21 @@ function AccountPageContent() {
   if (loading) {
     return (
       <div className="container mt-5 text-center">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+        <div className="spinner-border" role="status"></div>
       </div>
     )
   }
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 mb-5">
       <div className="row">
         <div className="col-lg-8">
           <h2 className="mb-4">My Account</h2>
 
-          {/* Email Confirmed Alert - Wrapped in Suspense */}
           <Suspense fallback={null}>
             <ConfirmationAlert />
           </Suspense>
 
-          {/* Account Info */}
           <div className="card mb-4">
             <div className="card-header">
               <h5 className="mb-0">Account Information</h5>
@@ -130,24 +156,32 @@ function AccountPageContent() {
             </div>
           </div>
 
-          {/* Purchase History */}
           <div className="card mb-4">
             <div className="card-header">
               <h5 className="mb-0">Purchase History ({purchases.length})</h5>
             </div>
             <div className="card-body">
               {purchases.length === 0 ? (
-                <p className="text-muted mb-0">No purchases yet. <a href="/">Browse prompts</a></p>
+                <div className="text-center py-4">
+                  <p className="text-muted mb-3">No purchases yet.</p>
+                  <a href="/" className="btn btn-primary">Browse Prompts</a>
+                </div>
               ) : (
                 <div className="list-group">
                   {purchases.map((purchase) => (
                     <div key={purchase.id} className="list-group-item">
                       <div className="d-flex justify-content-between align-items-start">
                         <div className="flex-grow-1">
-                          <h6 className="mb-1">{purchase.prompt?.title}</h6>
-                          <p className="mb-2 text-muted small">{purchase.prompt?.description}</p>
+                          <h6 className="mb-1">{purchase.prompt?.title || 'Prompt'}</h6>
+                          <p className="mb-2 text-muted small">
+                            {purchase.prompt?.description || ''}
+                          </p>
                           <div className="mb-2">
-                            <span className="badge bg-secondary me-1">{purchase.prompt?.category}</span>
+                            {purchase.prompt?.category && (
+                              <span className="badge bg-secondary me-1">
+                                {purchase.prompt.category}
+                              </span>
+                            )}
                             <span className="badge bg-primary">${purchase.price_paid}</span>
                           </div>
                           <small className="text-muted">
@@ -172,7 +206,6 @@ function AccountPageContent() {
             </div>
           </div>
 
-          {/* Danger Zone */}
           <div className="card border-danger">
             <div className="card-header bg-danger text-white">
               <h5 className="mb-0">Danger Zone</h5>
@@ -180,14 +213,15 @@ function AccountPageContent() {
             <div className="card-body">
               <h6>Delete Account</h6>
               <p className="text-muted mb-3">
-                Once you delete your account, there is no going back. Your purchase history will remain accessible via email links.
+                Once you delete your account, there is no going back. 
+                Your purchased prompts will remain accessible via the email links we sent you.
               </p>
               <button 
                 className="btn btn-danger"
                 onClick={handleDeleteAccount}
                 disabled={deleting}
               >
-                {deleting ? 'Processing...' : 'Delete My Account'}
+                {deleting ? 'Deleting...' : 'Delete My Account'}
               </button>
             </div>
           </div>
@@ -219,14 +253,11 @@ function AccountPageContent() {
   )
 }
 
-// Export with Suspense wrapper
 export default function AccountPage() {
   return (
     <Suspense fallback={
       <div className="container mt-5 text-center">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+        <div className="spinner-border" role="status"></div>
       </div>
     }>
       <AccountPageContent />

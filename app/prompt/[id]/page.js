@@ -1,20 +1,44 @@
 import { supabase } from '../../../lib/supabase'
+import { cookies } from 'next/headers'
 import BuyButton from '../../../components/BuyButton'
+import PurchasedPrompt from '../../../components/PurchasedPrompt'
 
 export const revalidate = 0
 
 async function getPrompt(id) {
-  const { data, error } = await supabase
-    .from('prompts')
-    .select('*')
-    .eq('id', id)
-    .eq('status', 'approved')
-    .single()
+  try {
+    const { data, error } = await supabase
+      .from('prompts')
+      .select('*')
+      .eq('id', id)
+      .eq('status', 'approved')
+      .single()
 
-  if (error || !data) {
+    if (error || !data) {
+      return null
+    }
+
+    return {
+      ...data,
+      optimized_models: data.optimized_models || [],
+      region_language: data.region_language || 'Global/English'
+    }
+  } catch (error) {
+    console.error('Error fetching prompt:', error)
     return null
   }
+}
 
+async function checkIfPurchased(promptId, userEmail) {
+  if (!userEmail) return null
+  
+  const { data } = await supabase
+    .from('purchases')
+    .select('access_token')
+    .eq('prompt_id', promptId)
+    .eq('buyer_email', userEmail)
+    .single()
+  
   return data
 }
 
@@ -33,6 +57,12 @@ export default async function PromptDetailPage({ params }) {
     )
   }
 
+  const optimizedModels = prompt.optimized_models || []
+  const regionLanguage = prompt.region_language || 'Global/English'
+
+  // Check if user already purchased (pass null if not logged in)
+  const purchase = null // We'll implement this in BuyButton instead for better UX
+
   return (
     <div className="container mt-5 mb-5">
       <div className="row">
@@ -42,21 +72,21 @@ export default async function PromptDetailPage({ params }) {
           <div className="mb-3 d-flex flex-wrap gap-2 align-items-center">
             <span className="badge bg-secondary fs-6">{prompt.category}</span>
             <span className="badge bg-primary fs-5">${prompt.price}</span>
-            {prompt.region_language && (
+            {regionLanguage && (
               <span className="badge bg-info text-dark fs-6">
-                📍 {prompt.region_language}
+                📍 {regionLanguage}
               </span>
             )}
           </div>
 
-          {prompt.optimized_models && prompt.optimized_models.length > 0 && (
+          {optimizedModels.length > 0 && (
             <div className="card mb-4 border-primary">
               <div className="card-body">
                 <h6 className="card-title mb-3">
                   <i className="bi bi-robot"></i> Optimized for These AI Models:
                 </h6>
                 <div className="d-flex flex-wrap gap-2">
-                  {prompt.optimized_models.map((model, idx) => (
+                  {optimizedModels.map((model, idx) => (
                     <span key={idx} className="badge bg-primary" style={{fontSize: '0.9rem', padding: '0.5rem 1rem'}}>
                       {model}
                     </span>
@@ -94,7 +124,7 @@ export default async function PromptDetailPage({ params }) {
               <li>Complete prompt sent to your email instantly</li>
               <li>Lifetime access via unique link</li>
               <li>Optimized for professional use</li>
-              <li>Ready to use with {prompt.optimized_models?.join(', ') || 'major AI models'}</li>
+              <li>Ready to use with {optimizedModels.length > 0 ? optimizedModels.join(', ') : 'major AI models'}</li>
             </ul>
           </div>
         </div>

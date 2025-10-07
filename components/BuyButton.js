@@ -49,7 +49,14 @@ export default function BuyButton({ promptId, price }) {
       const data = await response.json()
 
       if (data.url) {
-        window.location.href = data.url
+        try {
+          // Ensure the URL is valid
+          const checkoutUrl = new URL(data.url);
+          window.location.href = checkoutUrl.toString();
+        } catch (urlError) {
+          console.error('Invalid checkout URL:', data.url);
+          throw new Error('Invalid checkout URL received from server');
+        }
       } else {
         throw new Error('No checkout URL returned')
       }
