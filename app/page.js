@@ -97,13 +97,93 @@ export default function HomePage() {
   return (
     <div className="container mt-5 mb-5">
       {/* Hero Section */}
-      <div className="text-center mb-5">
-        <h1 className="display-4 fw-bold mb-3">Corporate AI Prompts</h1>
-        <p className="lead text-muted mb-4">
-          Professional prompts for Legal, Compliance, HR, Finance & more.<br/>
-          Work less. 😊 Be happy more.
+      <div className="text-center mb-5 py-5">
+        <div className="mb-4">
+          <span className="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill">
+            <i className="bi bi-robot me-2"></i>
+            AI-Powered Business Solutions
+          </span>
+        </div>
+        <h1 className="display-3 fw-bold mb-3">
+          Corporate AI Prompts<br/>
+          <span className="text-primary">Marketplace</span>
+        </h1>
+        <p className="lead text-muted mb-4 mx-auto" style={{maxWidth: '600px'}}>
+          Professional, tested prompts for Legal, Compliance, HR, Finance & more.<br/>
+          <strong>Work less. 😊 Be happy more.</strong>
         </p>
+        <div className="d-flex gap-3 justify-content-center flex-wrap mb-4">
+          <div className="text-center">
+            <div className="fs-3 fw-bold text-primary">{prompts.length}+</div>
+            <small className="text-muted">Prompts</small>
+          </div>
+          <div className="text-center">
+            <div className="fs-3 fw-bold text-success">4.8★</div>
+            <small className="text-muted">Avg Rating</small>
+          </div>
+          <div className="text-center">
+            <div className="fs-3 fw-bold text-info">$29</div>
+            <small className="text-muted">Avg Price</small>
+          </div>
+        </div>
+        {!loading && prompts.length > 0 && (
+          <div className="d-flex gap-2 justify-content-center">
+            <a href="#prompts" className="btn btn-primary btn-lg">
+              <i className="bi bi-search me-2"></i>
+              Browse Prompts
+            </a>
+            <a href="/sell" className="btn btn-outline-primary btn-lg">
+              <i className="bi bi-upload me-2"></i>
+              Sell Your Prompts
+            </a>
+          </div>
+        )}
       </div>
+
+      {/* Features Section */}
+      <div className="row mb-5 g-4" id="features">
+        <div className="col-md-4">
+          <div className="card h-100 border-0 shadow-sm text-center p-3">
+            <div className="card-body">
+              <div className="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                <i className="bi bi-lightning-charge-fill text-primary fs-1"></i>
+              </div>
+              <h5 className="card-title">Instant Delivery</h5>
+              <p className="card-text text-muted">
+                Get your prompt immediately via email. No waiting, no hassle.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card h-100 border-0 shadow-sm text-center p-3">
+            <div className="card-body">
+              <div className="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                <i className="bi bi-shield-check text-success fs-1"></i>
+              </div>
+              <h5 className="card-title">Quality Tested</h5>
+              <p className="card-text text-muted">
+                All prompts are tested and optimized for professional use.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card h-100 border-0 shadow-sm text-center p-3">
+            <div className="card-body">
+              <div className="bg-info bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                <i className="bi bi-infinity text-info fs-1"></i>
+              </div>
+              <h5 className="card-title">Lifetime Access</h5>
+              <p className="card-text text-muted">
+                One-time payment. Access your prompt forever with a unique link.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="prompts"></div>
 
       {/* Search & Filter Bar */}
       <div className="card mb-4 shadow-sm">
