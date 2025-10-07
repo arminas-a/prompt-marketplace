@@ -1,7 +1,10 @@
+// ============================================
+// FILE: app/prompt/[id]/page.js (REPLACE ENTIRE FILE)
+// LOCATION: app/prompt/[id]/page.js
+// Fixed: Removed non-existent PurchasedPrompt import
+// ============================================
 import { supabase } from '../../../lib/supabase'
-import { cookies } from 'next/headers'
 import BuyButton from '../../../components/BuyButton'
-import PurchasedPrompt from '../../../components/PurchasedPrompt'
 
 export const revalidate = 0
 
@@ -29,19 +32,6 @@ async function getPrompt(id) {
   }
 }
 
-async function checkIfPurchased(promptId, userEmail) {
-  if (!userEmail) return null
-  
-  const { data } = await supabase
-    .from('purchases')
-    .select('access_token')
-    .eq('prompt_id', promptId)
-    .eq('buyer_email', userEmail)
-    .single()
-  
-  return data
-}
-
 export default async function PromptDetailPage({ params }) {
   const prompt = await getPrompt(params.id)
 
@@ -59,9 +49,6 @@ export default async function PromptDetailPage({ params }) {
 
   const optimizedModels = prompt.optimized_models || []
   const regionLanguage = prompt.region_language || 'Global/English'
-
-  // Check if user already purchased (pass null if not logged in)
-  const purchase = null // We'll implement this in BuyButton instead for better UX
 
   return (
     <div className="container mt-5 mb-5">
