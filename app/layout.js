@@ -17,6 +17,11 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="d-flex flex-column min-vh-100">
+        <div className="alert alert-warning mb-0 text-center py-2 rounded-0 border-0" role="alert">
+          <small>
+            🧪 <strong>Demo Mode</strong> - Use test card: <code>4242 4242 4242 4242</code> | Any future date | Any CVC
+          </small>
+        </div>
         <Navbar />
         <main className="flex-grow-1">{children}</main>
         <Footer />

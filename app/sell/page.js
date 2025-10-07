@@ -225,9 +225,13 @@ export default function SellPage() {
           <h2>Sell Your Prompts</h2>
           <p className="text-muted">Logged in as: {user?.email}</p>
         </div>
-        <button 
-          className="btn btn-primary"
-          onClick={() => {
+        <div className="d-flex gap-2">
+          <a href="/sell/earnings" className="btn btn-outline-success">
+            <i className="bi bi-graph-up me-2"></i>Earnings
+          </a>
+          <button 
+            className="btn btn-primary"
+            onClick={() => {
             if (showForm) {
               setShowForm(false)
               setEditingId(null)
@@ -243,9 +247,10 @@ export default function SellPage() {
               setShowForm(true)
             }
           }}
-        >
-          {showForm ? 'Cancel' : '+ New Prompt'}
-        </button>
+          >
+            {showForm ? 'Cancel' : '+ New Prompt'}
+          </button>
+        </div>
       </div>
 
       {showForm && (
